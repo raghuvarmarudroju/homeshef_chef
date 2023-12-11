@@ -1,0 +1,220 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>#{{order?.order_id}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/account"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" color="primary" [routerLink]="['/', 'tabs', 'orders', order?.id, 'chat']">HELP</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <div class="mapDiv" *ngIf="order?.status == 2 || order?.status == 4 || order?.status == 8">
+    <app-track [order]="order" (duration)="updateDuration($event)"></app-track>
+  </div>
+
+  <ion-item class="delivery_details" lines="full" *ngIf="(order?.status == 4)">
+    <ion-label>
+      {{order?.status == 4 ? 'On the Way to ' + order?.chef?.name : 'Out for delivery'}}
+    </ion-label>
+    <ion-text slot="end" class="ion-text-wrap time" *ngIf="duration">
+      {{duration}}
+    </ion-text>
+  </ion-item>
+
+  <ion-item class="delivery_details" lines="full" *ngIf="order?.status == 0">
+    <ion-label class="ion-text-wrap ion-text-center" color="tertiary">
+      Waiting for confirmation from {{order?.chef?.name}}
+    </ion-label>
+  </ion-item>
+
+  <ion-list>
+    <ion-item class="chef" lines="full">
+      <ion-thumbnail slot="start">
+        <img [src]="order?.chef?.cover ? order?.chef?.cover : 'assets/imgs/avatar.png'"/>
+      </ion-thumbnail>
+      <ion-label>
+        {{order?.chef?.name}}      
+        <p class="ion-text-wrap">
+          <ion-text>{{order?.chef?.chef_address?.address}}</ion-text>
+        </p>
+        <p 
+          *ngIf="order?.rating?.comment_chef && order?.rating?.comment_chef != ''">
+          <ion-text>({{order?.rating?.comment_chef}})</ion-text>
+        </p>
+      </ion-label>
+      
+      <ion-fab-button
+        *ngIf="order?.status == 1 || order?.status == 2 || order?.status == 4"  
+        size="small"
+        slot="end"
+        color="success"
+        class="fab_call"
+        (click)="call(order?.chef?.number)">
+        <ion-icon name="call-outline"></ion-icon>
+      </ion-fab-button>
+
+      <div slot="end" *ngIf="order?.status == 5 && order?.rating">
+        <app-rating
+        [readonly]="true"
+        [initialRating]="order?.rating?.rate_chef"
+        [size]="'0.7rem'"
+        [padding]="'0 1px'">
+      </app-rating>
+      </div>
+
+    </ion-item>
+    
+    <ion-item-divider *ngIf="order?.rider" mode="md" color="light">
+      <ion-label>Delivery details</ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none" *ngIf="order?.rider" class="rider">
+      <ion-avatar slot="start" *ngIf="order?.rider">
+        <img [src]="order?.rider?.photo ? order?.rider?.photo : 'assets/imgs/avatar.png'" />
+      </ion-avatar>
+      <ion-label>
+        {{order?.rider?.name}}
+        <p *ngIf="order?.rider?.vehicle">
+          <ion-text>{{order?.rider?.vehicle}}</ion-text>
+        </p>
+        <p 
+          *ngIf="order?.rating?.comment_rider && order?.rating?.comment_rider != ''">
+          <ion-text>({{order?.rating?.comment_rider}})</ion-text>
+        </p>
+      </ion-label>
+      
+      <ion-fab-button
+        *ngIf="order?.rider 
+          && 
+          (order?.status == 'Ongoing' 
+          || 
+          order?.status == 'Picked')"  
+        size="small"
+        slot="end"
+        color="success"
+        class="fab_call"
+        (click)="call(order?.rider?.phone)">
+        <ion-icon name="call-outline"></ion-icon>
+      </ion-fab-button>
+
+      <div slot="end" *ngIf="order?.status == 5 && order?.rating">
+        <app-rating
+          [readonly]="true"
+          [initialRating]="order?.rating?.rate_rider"
+          [size]="'0.7rem'"
+          [padding]="'0 1px'">
+        </app-rating>
+      </div>
+
+    </ion-item>
+  </ion-list>
+
+  <ion-list-header>
+    <ion-label color="tertiary">Bill Details</ion-label>
+  </ion-list-header>
+
+  <ion-card>
+
+    <ion-grid>
+
+      <div class="items">
+        <ion-row *ngFor="let item of order?.details">
+
+          <ion-col class="circle" size="1">
+            <div [class]="item?.veg ? 'dotCircle dotVeg' : 'dotCircle dotNonVeg'">
+              <div></div>
+            </div>
+          </ion-col>
+  
+          <ion-col size="7">
+            {{item?.product?.name}} ({{item?.quantity}})
+          </ion-col>
+          <ion-col size="4" class="ion-text-end">₹{{item?.price * item?.quantity}}</ion-col>
+          <p *ngIf="order?.instruction" class="ion-text-wrap">({{order?.instruction}})</p>
+        </ion-row>
+      </div>
+      
+      <div class="dashedBorderTop">
+        <ion-row color="dark">
+          <ion-col size="8">
+            Item Total
+          </ion-col>
+          <ion-col size="4" class="ion-text-end">₹{{order?.total_order_amount}}</ion-col>
+        </ion-row> 
+      </div>
+
+      <ion-row color="dark" class="borderBottomSmall">
+        <ion-col size="8">
+          Delivery fee
+        </ion-col>
+        <ion-col size="4" class="ion-text-end">₹{{order?.delivery_charges}}</ion-col>
+      </ion-row>  
+
+      <ion-row color="dark">
+        <ion-col size="6">
+          Pay via {{order?.payment_mode}}
+        </ion-col>
+        <ion-col size="6" class="ion-text-end">
+          <b>
+            <ion-text color="dark">
+              <span class="total">Bill Total</span> ₹{{order?.amount_to_be_paid}}
+            </ion-text>
+          </b>
+        </ion-col>
+      </ion-row> 
+
+    </ion-grid>
+
+  </ion-card>
+
+
+</ion-content>
+
+<ion-footer [class]="checkClass()">  
+
+  <ion-row>
+
+    <ion-col size="6">
+      <ion-item lines="none">
+        <ion-label>
+          <ion-text color="success">₹{{order?.amount_to_be_paid}}</ion-text>
+          <p class="time">{{order?.delivery_date | date: 'MMM d, y'}} {{order?.delivery_time}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col 
+      *ngIf="order?.status == 0"
+      size="6" 
+      class="ion-no-padding ion-text-center"
+      (click)="changeStatus('Cancelled')">
+      <ion-button expand="block" color="danger">
+        <ion-icon slot="start" name="ban"></ion-icon>
+        CANCEL
+      </ion-button>
+    </ion-col>
+    
+    <ion-col
+      *ngIf="
+      order?.status == 5 
+      || 
+      order?.status == 6 
+      || 
+      order?.status == 3
+      " 
+      [style.background]="getBgColor(order?.status)"
+      size="6" 
+      class="ion-no-padding ion-text-center right">
+      <ion-button fill="clear" expand="block" color="white">
+        {{delivery_status[order.status].name}}
+        <ion-icon slot="start" [name]="order?.status == 5 ? 'checkmark-circle' : 'close-circle'"></ion-icon>
+      </ion-button>
+    </ion-col>
+
+  </ion-row>
+
+</ion-footer>

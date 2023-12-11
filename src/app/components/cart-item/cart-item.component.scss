@@ -1,0 +1,36 @@
+ion-row.cartItem {
+    margin: 1vh 0.5vh;
+    letter-spacing: 0.5px;
+    ion-col.circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    ion-col { 
+        ion-label, ion-text {
+            vertical-align: -webkit-baseline-middle;
+        }
+        ion-label {
+            font-size: 0.82rem !important;
+            font-weight: bold;      
+        }
+        ion-text {
+            font-size: 0.8rem;
+        }
+        ion-row {
+            border: 1px solid var(--ion-color-medium);
+            font-weight: 550;
+            border-radius: 5px;
+            padding: 0.3rem;
+            ion-col {
+                padding: 0;
+                ion-icon, ion-text {
+                    vertical-align: middle !important;
+                }
+            }
+            ion-col[size="3"] {
+                font-weight: 500;
+            }
+        }
+    }
+}

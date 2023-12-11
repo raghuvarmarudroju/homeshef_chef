@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="dark" (click)="closeModal()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>APPLY COUPON</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light">
+
+  <div *ngIf="isLoading" class="ion-text-center alignSpinner">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <app-empty-screen *ngIf="!isLoading && coupons?.length == 0" [model]="model"></app-empty-screen>
+
+  <ng-container *ngIf="!isLoading && coupons?.length > 0">
+    <div *ngFor="let coupon of coupons; let i = index" class="ion-margin" [ngClass]="{'coupon': more[i]}">
+
+      <ion-card>
+  
+        <ion-row>
+          <ion-col 
+            size="1" 
+            class="ion-text-center offer" 
+            [ngClass]="{'amtSaved' : coupon?.saved >= 0, 'amtInsufficient' : coupon?.saved < 0}">
+            <ion-label color="white">
+              <strong>
+                {{coupon?.isPercentage ? (coupon?.discount + '% OFF') : ('₹' + coupon?.discount + ' OFF')}}
+              </strong>
+            </ion-label>
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+          </ion-col>
+    
+          <ion-col size="11">
+            <ion-item lines="none" class="dashedBorderBottom">
+              <ion-label>
+                {{coupon?.code}}
+                <p>
+                  <ion-text [color]="coupon?.saved >= 0 ? 'success' : 'medium'">
+                    {{coupon?.saved >= 0 ? ('Save ₹' + coupon?.saved + ' on this order') : ('Add ₹' + ((-1) * coupon?.saved) + ' more to avail this offer')}}
+                  </ion-text>
+                </p>
+              </ion-label>
+              <ion-button 
+                fill="clear" 
+                slot="end" 
+                [color]="coupon?.saved >= 0 ? 'primary' : 'medium'" 
+                [strong]="true"
+                [disabled]="coupon?.saved < 0"
+                (click)="closeModal(coupon)">
+                APPLY
+              </ion-button>
+            </ion-item>
+            <ion-row class="ion-margin-top" [style.marginBottom]="coupon?.terms ? '0' : '1vh'">
+              <ion-col size="12">
+                <div>
+                  {{coupon?.description}} 
+                  {{coupon?.minimumOrderAmount ? (' on orders above ₹' + coupon?.minimumOrderAmount) : ' on all orders'}}. 
+                  {{coupon?.upto_discount ? (' Maximum discount ₹' + coupon.upto_discount) : ''}}
+                </div>
+              </ion-col>
+              <ion-col *ngIf="coupon?.terms" size="12" class="more">
+                <ion-button [strong]="true" fill="clear" size="small" (click)="more[i] = !more[i]">
+                  <ion-icon [name]="more[i] ? 'remove' : 'add'" slot="start"></ion-icon>
+                  {{more[i] ? 'LESS' : 'MORE'}}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+    
+        </ion-row>
+    
+      </ion-card>
+    
+      <ion-row 
+        *ngIf="coupon?.terms && more[i]" 
+        class="ion-margin-horizontal terms">
+        <!-- id="tc"
+        [ngClass]="{'hide': !more[i]}" -->
+        <ion-col size="12">
+          <ion-label color="dark">
+            Terms ans Conditions apply
+          </ion-label>
+
+          <ion-row *ngFor="let item of coupon?.terms">
+            <ion-col size="1">
+              <li></li>
+            </ion-col>
+            <ion-col size="11">
+              <ion-text class="ion-text-justify">
+                {{item}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="coupon?.expiryDate">
+            <ion-col size="1">
+              <li></li>
+            </ion-col>
+            <ion-col size="11">
+              <ion-text class="ion-text-justify">
+                Offer valid till {{coupon?.expiryDate}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+
+        </ion-col>
+      </ion-row>
+  
+    </div>
+  </ng-container>
+
+</ion-content>

@@ -1,0 +1,9 @@
+<ion-item mode="ios" lines="none" [class]="chat?.senderType == 'admin' ? 'admin' : 'user'">
+  <ion-label [slot]="chat?.senderType != 'admin' ? 'end' : ''" class="ion-text-wrap">
+    <ion-text>{{chat?.message}}</ion-text>
+    <ion-note>
+      <small>{{chat?.timestamp | date: 'HH:mm'}}</small>
+      <ion-icon [color]="chat?.senderType == 'admin' ? 'primary' : 'white'" name="checkmark-done-outline"></ion-icon>
+    </ion-note>
+  </ion-label>
+</ion-item>

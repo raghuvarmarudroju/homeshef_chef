@@ -1,0 +1,93 @@
+ion-item {
+    margin-bottom: 3vh;
+    
+    ion-label {
+        div.dotCircle {
+            width: 14px;
+        }
+        .sas{
+            padding-left: 0px !important;
+            ion-text {
+                font-size: 12px !important;
+                padding: 4px 2px;
+                margin: 4px 0px;
+                font-weight: bold;
+            }
+            .unavailable_day {
+                font-size: 4em;
+                line-height: 1em;
+                position: relative;
+            }
+            .unavailable_day::after {
+                border-bottom: 0.125em solid dimgray;
+                content: "";
+                left: 0;
+                margin-top: calc(0.125em / 2 * -1);
+                position: absolute;
+                right: 0;
+                top: 50%;
+            }
+        }
+        ion-text {
+            font-size: 1rem !important;
+            font-weight: bold;
+        }
+        p {
+            margin-top: 5px;
+            font-size: 0.8rem !important;
+        }
+    } 
+    div[slot="end"] {
+        position: relative;
+        height: 14vh;
+        width: 15vh;
+        ion-thumbnail {
+            height: 13vh;
+            width: 100%;
+            img {
+                border-radius: 10px;
+                height: 100%;
+                width: 100%;
+            }
+        }
+        ion-row {
+            width: 96%;
+            border: 1px solid var(--ion-color-medium);
+            border-radius: 5px;
+            font-weight: 450;
+            background: var(--ion-color-white);
+            position: absolute;
+            bottom: 0;  
+            left: 4%;
+            transform: translateX(-2%);
+            padding: 0.8vh 0.5vh;
+            ion-col {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                ion-text {
+                    font-size: 1rem;
+                    font-weight: 600;
+                }
+                ion-icon {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+}
+
+.grayScale {
+    ion-thumbnail {
+        img {
+            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
+        }
+    }
+    ion-label {
+        ion-text, p {
+            color: var(--ion-color-medium);
+        }
+    }
+}

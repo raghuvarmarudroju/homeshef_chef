@@ -1,0 +1,232 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+@import "./theme/fonts.scss";
+
+* {
+    font-family: Gilroy;
+}
+
+.otp-input-style {
+    background: transparent;
+}
+
+ion-modal.home-modal::part(content) {
+    --height: 90%;
+    // margin-top: 20% !important;
+    position: absolute;
+    bottom: 0;
+    border-radius: 5px !important;
+}
+  
+ion-title {
+    font-weight: bold;
+}
+
+ion-label, h4 {
+    font-weight: bold !important;
+    font-size: 0.9rem;
+}
+
+ion-note, p {
+    font-size: 0.8rem;
+}
+
+h5 {
+    font-size: 0.85rem;
+}
+
+h6 {
+    font-size: 0.82rem;
+}
+
+.dotCircle {
+    border-radius: 4px;
+    div {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin: 2px;
+    }
+}
+
+.dotVeg {
+    border: 1px solid var(--ion-color-success);
+    div {
+        background: var(--ion-color-success);
+    }
+}
+.dotNonVeg {
+    border: 1px solid var(--ion-color-danger);
+    div {
+        background: var(--ion-color-danger);
+    }
+}
+
+.borderBottom {
+    border-bottom: 1.5vh solid var(--ion-color-light);
+}
+
+.borderBottomLarge {
+    border-bottom: 2.5vh solid var(--ion-color-light);
+}
+
+.borderBottomSmall {
+    border-bottom: 0.1rem solid var(--ion-color-light);
+}
+
+.dashedBorderBottom {
+    border-bottom: 1px dashed var(--ion-color-medium);
+}
+
+.dashedBorderTop {
+    border-top: 1px dashed var(--ion-color-medium);
+}
+
+.dashedLightBorderTop {
+    border-top: 1px dashed lightgray;
+}
+
+.borderTop {    
+    border-top: 1px solid lightgray;
+}
+
+.alignSpinner {
+    transform: translateY(40vh);
+}
+
+ion-fab-button.fab_call {
+    width: 3.5vh;
+    height: 3.5vh;
+    ion-icon {
+        font-size: 1.2rem;
+    }
+}
+
+// home page search bar design
+ion-searchbar.srchBar {
+    --icon-color: var(--ion-color-primary);
+    --border-radius: 10px;
+    .searchbar-input-container {
+        ion-icon {
+            inset-inline-start: initial;
+            inset-inline-end: 16px;
+        }
+        input {
+            padding-inline-start: 20px !important;
+        }
+    }
+}
+
+.ios {
+    ion-searchbar.srchBar {
+        padding: 0;
+        .searchbar-input-container {
+            height: 45px;
+        }
+     }
+}
+.md {
+    ion-searchbar.srchBar {
+        --background: #EDEDED;
+        padding: 8px 0;
+    }
+    ion-input {
+        --background: #EDEDED;
+        padding: 8px 0;
+    }
+}
+
+// select location
+
+ion-searchbar.place {
+    ion-icon.searchbar-search-icon {
+        opacity: 1;
+        color: var(--ion-color-primary);
+        font-size: large;
+    }
+}
+.ios {
+    ion-searchbar.place {
+        padding: 0;
+        .searchbar-input-container {
+            height: 45px; 
+        }
+     }
+}
+
+// payment option page
+ion-list.location {
+    padding-top: 10px;
+    ion-item {
+        --padding-start: 25px;
+        ion-label {
+            ion-text {
+                font-size: 0.85rem;
+                ion-text {
+                    font-weight: 550;
+                }
+                span {
+                    color: gray;
+                    font-weight: 450;
+                    font-size: 0.82rem;
+                    // border-left: 1px solid gray;
+                }
+                span.line {
+                    margin: 0 8px;
+                }
+            }
+            p {
+                margin-top: 8px;
+            }
+        }
+    
+        div[slot="start"] {
+            text-align: -webkit-center;
+            .circle1, .circle2 {
+                display: flex;
+                flex-direction: column;
+                background: var(--ion-color-white);
+                width: 12px;
+                height: 12px;
+                border: 3px solid var(--ion-color-secondary);
+                border-radius: 50%;
+            }
+            .connectingLine {
+                display: flex;
+                flex-direction: column;
+                align-self: center;
+                height: 15px;
+                width: 2px;
+                background: var(--ion-color-secondary);
+            }
+        }
+    }
+
+}
+.input-bottom{
+    border-top: none !important;
+}

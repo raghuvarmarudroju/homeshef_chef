@@ -1,0 +1,186 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title color="tertiary">Cart</ion-title>
+    <ion-buttons slot="start" *ngIf="urlCheck && urlCheck != 'tabs'">
+      <ion-back-button [defaultHref]="getPreviousUrl()"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <app-empty-screen *ngIf="!model?.chef"></app-empty-screen>
+
+  <ng-container *ngIf="model?.chef">
+    <ion-list lines="none">
+
+      <ion-item class="borderBottomSmall cartData">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="model?.chef?.cover"></ion-img>
+          <!-- [src]="model?.chef?.cover ? model.chef.cover : 'assets/imgs/1.jpg'" -->
+        </ion-thumbnail>
+        <ion-label>
+          {{model?.chef?.name}}
+          <p>
+            <ion-note class="ion-text-wrap" color="medium">
+              {{model?.chef?.address}}
+            </ion-note>
+          </p>
+        </ion-label>
+      </ion-item>
+
+      <app-cart-item 
+        *ngFor="let item of model?.items; let i = index"
+        [item]="item"
+        [index]="i"
+        (add)="quantityPlus($event)"
+        (minus)="quantityMinus($event)">
+      </app-cart-item>
+
+      <ion-item lines="none" class="ion-margin-top dashedLightBorderTop cartData">
+        <ion-icon slot="start" name="list-outline"></ion-icon>
+        <ion-input 
+          label="" 
+          type="text" 
+          placeholder="Any instructions? We will try our best" 
+          [(ngModel)]="instruction">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+  
+    <ion-list lines="none" class="coupon">
+
+      <ion-item-divider mode="md" color="light">
+        <ion-label class="ion-no-margin" color="dark">Offers & Benefits</ion-label>
+      </ion-item-divider>
+  
+      <ion-item 
+        *ngIf="!selectedCoupon" 
+        class="offer" 
+        [detail]="true" 
+        (click)="applyCoupon = true">
+        <ion-label>Apply Coupon</ion-label>
+      </ion-item>
+
+      <ion-item 
+        *ngIf="selectedCoupon"
+        class="offer selected_coupon">
+        <ion-label>
+          '{{selectedCoupon?.code}}' applied
+          <p>
+            <ion-icon name="checkmark-sharp" color="primary"></ion-icon>
+            <ion-text color="primary">
+              <strong>₹{{selectedCoupon?.saved}}</strong>
+            </ion-text>
+            <ion-text class="coupon_text">
+              coupon savings
+            </ion-text>
+          </p>
+        </ion-label>
+        <ion-button fill="clear" color="danger" [strong]="true" (click)="removeCoupon()">
+          <ion-text>Remove</ion-text>
+        </ion-button>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-list-header>
+      <ion-label color="tertiary">Bill Details</ion-label>
+    </ion-list-header>
+  
+    <ion-list lines="none">
+
+      <ion-item>
+        <ion-label color="dark">Item Total</ion-label>
+        <ion-text slot="end" color="dark">₹{{model?.totalPrice | number: '0.2-2'}}</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="dark">Delivery fee</ion-label>
+        <ion-text slot="end" color="dark">₹{{model?.deliveryCharge | number: '0.2-2'}}</ion-text>
+      </ion-item>
+
+      <ion-item *ngIf="selectedCoupon" class="dashedLightBorderTop">
+        <ion-label color="dark">Item Discount</ion-label>
+        <ion-text slot="end" color="success">- ₹{{selectedCoupon?.saved | number: '0.2-2'}}</ion-text>
+      </ion-item>
+
+      <ion-item class="dashedBorderTop">
+        <ion-label color="dark">To Pay</ion-label>
+        <ion-text slot="end" color="dark"><strong>₹{{model?.grandTotal | number: '0.2-2'}}</strong></ion-text>
+      </ion-item>
+
+    </ion-list>
+
+  </ng-container>
+
+
+</ion-content>
+
+<ion-footer *ngIf="model?.chef">
+  <ion-toolbar>
+    <ion-row *ngIf="!location?.lat">
+      <ion-col size="6">
+        <ion-button expand="block" fill="outline" color="success" (click)="addAddress()">
+          ADD ADDRESS
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" color="success" (click)="changeAddress()">
+          CHANGE ADDRESS
+        </ion-button>
+      </ion-col>
+    </ion-row>    
+    <ion-item lines="none" *ngIf="location?.lat && location?.id && location?.id != ''">
+      <ion-button slot="end" size="small" fill="clear" (click)="changeAddress()">CHANGE</ion-button>
+      <ion-icon slot="start" name="home-outline"></ion-icon>
+      <ion-label>
+        <h5>Deliver to {{location?.title}}</h5>
+        <ion-text color="medium"><p>{{location?.address}}</p></ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none" *ngIf="location?.lat && (!location?.id || location?.id == '')">
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      <ion-label>
+        <h5>You are in a new location!</h5>
+        <ion-text color="medium"><p>{{location?.address}}</p></ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-button 
+      *ngIf="location?.lat && (!location?.id || location?.id == '')" 
+      expand="block" color="success"
+      (click)="addAddress(location)">
+      ADD ADDRESS TO PROCEED
+    </ion-button>
+    <ion-row *ngIf="location?.lat && location?.id && location?.id != ''">
+      <ion-col size="6" class="ion-no-padding finalAmt" (click)="scrollToBottom()">
+        <ion-item lines="none" color="light" class="ion-no-padding">
+          <ion-label>
+            <h6>₹{{model?.grandTotal | number: '0.2-2'}}</h6>
+            <ion-text color="success">
+              VIEW DETAILED BILL
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6" class="ion-text-center colStyle" (click)="makePayment()">
+        <ion-button color="white" fill="clear" [strong]="true">MAKE PAYMENT</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+
+  <ion-modal
+    #coupon_modal
+    (didDismiss)="applyCoupon = false"
+    [isOpen]="applyCoupon">
+    <ng-template>
+      <app-coupons 
+        [chef_id]="model?.chef?.id"
+        [orderTotal]="model?.totalPrice"
+        (close)="closeCouponModal($event)">
+      </app-coupons>
+    </ng-template>
+  </ion-modal>
+
+</ion-footer>

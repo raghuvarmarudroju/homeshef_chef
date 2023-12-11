@@ -1,0 +1,30 @@
+<ion-row class="cartItem">
+  <ion-col class="circle" size="1">
+    <div [class]="item?.veg ? 'dotCircle dotVeg' : 'dotCircle dotNonVeg'">
+      <div></div>
+    </div>
+  </ion-col>
+  <ion-col size="5">
+    <ion-label class="ion-text-wrap">
+      {{item?.name}}
+    </ion-label>
+  </ion-col>
+  <ion-col size="3">
+    <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-col size="3">
+        <ion-icon color="success" name="remove" (click)="quantityMinus()"></ion-icon>
+      </ion-col>
+      <ion-col size="6">
+        <ion-text color="dark">{{item?.quantity}}</ion-text>
+      </ion-col>
+      <ion-col size="3">
+        <ion-icon color="success" name="add" (click)="quantityPlus()"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-col>
+  <ion-col size="3" class="ion-text-right">
+    <ion-text color="dark">
+      ₹{{(item?.price * item.quantity) | number: '0.2-2'}}
+    </ion-text>
+  </ion-col>
+</ion-row>

@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>RATE ORDER</ion-title>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="dismiss()" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="light">
+
+  <div>
+
+    <ion-card class="ion-margin">
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-label color="dark" class="ion-text-wrap">
+            HOW SATISFIED ARE YOU WITH THE MEAL FROM {{order?.chef?.name}} ?
+          </ion-label>
+        </ion-col>
+        <ion-col size="12" class="rate">
+          <app-rating
+            (ratingChange)="rating.rate_chef = $event">
+          </app-rating>
+        </ion-col>
+        <ion-col size="12">
+          <ion-textarea
+            label="" 
+            rows="1" 
+            placeholder="Any Comments (optional)" 
+            [(ngModel)]="rating.comment_chef">
+          </ion-textarea>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+  </div>
+
+  <div>
+  
+    <ion-card class="ion-margin">
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-label color="dark" class="ion-text-wrap">
+            HOW SATISFIED ARE YOU WITH OUR DELIVERY PARTNER {{order?.rider?.name}} ?
+          </ion-label>
+        </ion-col>
+        <ion-col size="12" class="rate">
+          <app-rating
+            readOnly="false"
+            (ratingChange)="rating.rate_rider = $event">
+          </app-rating>
+        </ion-col>
+        <ion-col size="12">
+          <ion-textarea
+            label="" 
+            rows="1" 
+            placeholder="Any Comments (optional)" 
+            [(ngModel)]="rating.comment_rider">
+          </ion-textarea>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="submit()" size="large" expand="block" color="primary">
+    <ion-text>SUBMIT</ion-text>
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,103 @@
+
+<ion-card>
+
+    <form [formGroup]="form">
+    <ion-item lines="none" class="ion-margin-bottom">
+        <ion-select label="Community" placeholder="Select Community" formControlName="community_id" errorText="* Please enter your name">
+            <ion-select-option *ngFor="let community of communities" [value]="community.id">{{community.name}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item lines="none" class="ion-margin-bottom">
+      <ion-input 
+        formControlName="name" 
+        label=""
+        type="text" 
+        placeholder="Name"
+        errorText="* Please enter your name">
+      </ion-input>
+    </ion-item>
+  
+    <ion-item lines="none" class="ion-margin-bottom">
+      <ion-input 
+        formControlName="email" 
+        label=""
+        type="text" 
+        placeholder="Email address"
+        [errorText]="form.get('email').hasError('email') ? '* Please enter a proper email' : '* Please enter your email'">
+      </ion-input>
+    </ion-item>
+    
+    <ion-item lines="none" class="ion-margin-bottom">
+      <ion-input 
+        formControlName="number" 
+        label=""
+        type="tel" 
+        placeholder="Mobile number" 
+        minlength="10" 
+        maxlength="10"
+        [errorText]="(form.get('number').hasError('minlength') || form.get('number').hasError('maxlength')) ? '* Please enter a proper mobile number' : '* Please enter the mobile number'">
+      </ion-input>
+    </ion-item>
+    
+    <ion-item lines="none" class="ion-margin-bottom">
+      <ion-icon 
+        [name]="type ? 'eye' : 'eye-off'" 
+        slot="end" 
+        color="dark" 
+        (click)="changeType()">
+      </ion-icon>
+      <ion-input 
+        label=""
+        formControlName="password" 
+        [type]="type ? 'password' : 'text'" 
+        placeholder="Enter password"
+        minlength="8"
+        [errorText]="form.get('password').hasError('minlength') ? '* Password must be atleast 8 characters long' : '* Please enter your password'">
+      </ion-input>
+    </ion-item>
+    <ion-item class="check">
+      <ion-item class="check ss" >
+        <ion-checkbox slot="start" formControlName="terms" errorText="* Please accept Terms & Conditions"></ion-checkbox>
+      </ion-item>
+      
+      <ion-label (click)="terms()">Terms & Conditions</ion-label>
+    </ion-item>
+  </form>
+
+    <div class="ion-margin-horizontal">
+      <ion-button
+      *ngIf="!isLoading"
+        size="large" 
+        expand="block" 
+        shape="round" 
+        color="primary"
+        (click)="onSubmit()">
+        <ion-text>Sign Up</ion-text>
+      </ion-button>
+    
+      <ion-button 
+        *ngIf="isLoading"
+        class="ion-margin-horizontal"
+        size="large" 
+        expand="block" 
+        shape="round" 
+        color="primary" 
+        [disabled]="!form.valid || (form.get('c_password').value != form.get('password').value)">
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+    
+  </ion-card>
+  
+
+
+
+<!-- <p class="ion-text-center">
+  <ion-text color="medium">OR</ion-text>
+</p>
+
+<p class="ion-text-center">
+  <ion-icon name="logo-facebook" color="tertiary"></ion-icon>
+  <ion-icon name="logo-twitter" color="secondary"></ion-icon>
+  <ion-icon name="logo-google" color="danger"></ion-icon>
+</p> -->

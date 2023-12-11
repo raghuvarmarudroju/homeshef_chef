@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar color="white">
+    <ion-buttons slot="start" *ngIf="urlCheck">
+      <ion-back-button mode="md" [defaultHref]="getPreviousUrl()"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-start">
+      <ion-label>
+        Payment Options
+        <p>
+          <ion-text color="medium">
+            {{ order?.order?.length }} item <span class="dot"></span> Total ₹{{ order?.grandTotal }}
+          </ion-text>
+        </p>
+      </ion-label>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <!-- css for location class is in global.scss as it exceeded the payment-option.page.scss file budget of 2kb -->
+  <ion-list lines="none" class="ion-padding-bottom location">
+    <ion-item>
+
+      <div slot="start">
+        <div class="circle1"></div>
+        <div class="connectingLine"></div>
+        <div class="circle2"></div>
+      </div>
+  
+      <ion-label>
+        <ion-text>
+          <ion-text color="dark">{{order?.chef?.name}}</ion-text> 
+          <span class="line">|</span>
+          <span>Delivery in: {{order?.chef?.delivery_time}} mins</span>
+        </ion-text>
+        <p>
+          <ion-text>
+            <ion-text color="dark">{{order?.address?.title}}</ion-text> 
+            <span class="line">|</span>
+            <span>{{order?.address?.house || ''}} {{order?.address?.landmark || ''}} {{order?.address?.address}}</span>
+          </ion-text>
+        </p>
+      </ion-label>
+      
+    </ion-item>
+  </ion-list>
+
+  <ion-list-header>
+    <ion-label color="dark">Choose a payment option</ion-label>
+  </ion-list-header>
+
+  <ion-list class="ion-margin payment" lines="none">
+
+    <ion-radio-group [(ngModel)]="pay_mode">
+
+      <!-- <ion-item-group>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img src="assets/imgs/razorpay.png" />
+          </ion-thumbnail>
+          <ion-label>
+            Razorpay
+            <p *ngIf="pay_mode == 'Razorpay'">
+              Pay using Credit/Debit card, UPI
+            </p>
+          </ion-label>
+          <ion-radio aria-label="Razorpay" value="Razorpay" slot="end" color="success"></ion-radio>
+        </ion-item>
+        <ion-row *ngIf="pay_mode == 'Razorpay'">
+          <ion-col size="10" offset="2">
+            <ion-button expand="block" color="success" (click)="payWithRazorpay()">
+              <ion-text>PAY VIA RAZORPAY</ion-text>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-item-group> -->
+      
+      <ion-item-group class="dashedLightBorderTop">
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img src="assets/imgs/stripe.png" />
+          </ion-thumbnail>
+          <ion-label>
+            Stripe
+            <p *ngIf="pay_mode == 'Stripe'">
+              Pay using Credit/Debit card
+            </p>
+          </ion-label>
+          <ion-radio aria-label="Stripe" value="Stripe" slot="end" color="success"></ion-radio>
+        </ion-item>
+        <ion-row *ngIf="pay_mode == 'Stripe'">
+          <ion-col size="10" offset="2">
+            <ion-button expand="block" color="success" (click)="payWithStripe()">
+              <ion-text>PAY VIA STRIPE</ion-text>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-item-group>
+      
+      <ion-item-group class="dashedLightBorderTop">
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <div align="center">
+              <ion-icon name="cash-outline" color="success"></ion-icon>
+            </div>
+          </ion-thumbnail>
+          <ion-label>
+            Cash on Delivery
+            <p *ngIf="pay_mode == 'COD'">
+              Pay in cash on delivery
+            </p>
+          </ion-label>
+          <ion-radio aria-label="COD" value="COD" slot="end" color="success"></ion-radio>
+        </ion-item>
+        <ion-row *ngIf="pay_mode == 'COD'">
+          <ion-col size="10" offset="2">
+            <ion-button expand="block" color="success" (click)="placeOrder()">
+              <ion-text>PAY ON DELIVERY</ion-text>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-item-group>
+
+    </ion-radio-group>
+
+  </ion-list>
+
+</ion-content>

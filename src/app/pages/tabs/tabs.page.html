@@ -1,0 +1,24 @@
+<ion-tabs #tabs (ionTabsDidChange)="setCurrentTab()">
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon [name]="selectedTab == 'home' ? 'list' : 'list-outline'"></ion-icon>
+      <ion-label>Orders</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="search">
+      <ion-icon [name]="selectedTab == 'search' ? 'search' : 'search-outline'"></ion-icon>
+      <ion-label>REVIEW</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="cart">
+      <ion-icon [name]="selectedTab == 'cart' ? 'cart' : 'cart-outline'"></ion-icon>
+      <ion-label>CART</ion-label>
+      <!-- <ion-badge>6</ion-badge> -->
+    </ion-tab-button>
+
+    <ion-tab-button tab="account">
+      <ion-icon [name]="selectedTab == 'account' ? 'person' : 'person-outline'"></ion-icon>
+      <ion-label>ACCOUNT</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

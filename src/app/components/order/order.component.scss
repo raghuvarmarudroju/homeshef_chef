@@ -1,0 +1,75 @@
+ion-card {
+    margin: 0 10px 15px 10px;
+    .time {
+        padding-top: 1.5vh;
+    }
+    .statusText {
+        font-style: italic;
+    }
+    
+    ion-label {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        ion-text {
+            ion-icon {
+                font-size: 0.6rem;
+            }
+            p.amt {
+                color: dimgray;
+                ion-icon {
+                    color: dimgray;
+                    font-size: 1rem;
+                    vertical-align: middle;
+                }
+            }
+        }
+        p {
+            margin-top: 5px;
+        }
+    }
+    ion-note {
+        font-size: 0.87rem;
+        ion-icon {
+            float: right;
+            padding-left: 0.2rem;
+        }
+    }
+    p {
+        font-size: 0.8rem;
+        font-weight: normal;
+    }
+
+    .item_qty {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: dimgray;
+    }
+    
+    ion-item.rider {
+        margin-top: 5px;
+        padding-bottom: 5px;
+        ion-label, ion-note {
+            font-size: 0.8rem !important;
+        }
+    }
+    ion-row { 
+        margin-left: 10px;
+        margin-right: 10px;
+        background: var(--ion-color-white);
+        ion-col.rate {
+            place-self: center;
+            ion-label.comment {
+                font-size: 0.65rem;
+            }
+        }
+        ion-col {
+            ion-button {
+                height: 2.5rem;
+                ion-text {
+                    font-weight: bold;
+                    font-size: 0.9rem;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,36 @@
+ion-input, ion-text {
+    font-size: 0.9rem;
+    min-height: 25px !important;
+    border-top: none !important;
+}
+
+ion-item {
+    border: 1px solid #c8c7cc;
+    border-radius: 10px;
+}
+ion-item.check{
+    border: none !important;
+}
+.ss{
+    width: 100px !important;
+}
+ion-card {
+    margin: 1vh 4vh 0 4vh;
+    padding: 3vh 3vh;
+    border-radius: 20px;
+}
+
+ion-button {
+    margin: 5vh 0 0 0;
+}
+
+
+ion-checkbox {
+    --size: 32px;
+    --background-checked: #de0f17;
+  }
+  
+ion-checkbox::part(container) {
+    border-radius: 6px;
+    border: 2px solid #de0f17;
+}

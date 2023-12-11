@@ -1,0 +1,10 @@
+{
+  "name": "Homeshef",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular-standalone"
+}

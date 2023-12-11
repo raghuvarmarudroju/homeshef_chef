@@ -1,0 +1,48 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios">
+    <ion-title color="dark">EDIT ACCOUNT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-list class="ion-padding-horizontal ion-margin-bottom">
+
+      <ion-item class="ion-margin-vertical">
+        <!-- <ion-label position="floating">PHONE NUMBER</ion-label> -->
+        <ion-input 
+          label="KITCHEN NAME"
+          labelPlacement="floating"
+          #phoneInput
+          type="text"
+          required
+          [ngModel]="profile?.kitchen_name"
+          name="kitchen_name"
+          #kitchen_name="ngModel">
+        </ion-input>
+        <ion-icon *ngIf="kitchen_name.valid" name="checkmark-outline" slot="end" color="primary"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <!-- <ion-label position="floating">EMAIL ADDRESS</ion-label> -->
+        <ion-textarea 
+          label="ABOUT KITCHEN"
+          labelPlacement="floating"
+          required
+          name="description"
+          [ngModel]="profile?.description"
+          #description="ngModel">
+        </ion-textarea>
+        <ion-icon *ngIf="description.valid" name="checkmark-outline" slot="end" color="primary"></ion-icon>
+      </ion-item>
+
+    </ion-list>
+
+    <div class="ion-padding-horizontal ion-text-center">
+      <ion-button *ngIf="!isSubmitted" expand="block" type="submit" color="primary" [disabled]="!f.valid">UPDATE</ion-button>
+      <ion-button *ngIf="isSubmitted" color="primary" [disabled]="!f.valid">
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

@@ -1,0 +1,220 @@
+.ios {
+    ion-buttons.bck {
+        margin-top: 8px;
+    }
+    ion-toggle {
+        --handle-width: 2vh;
+    }
+    ion-toggle::part(track) {
+        height: 2.5vh;
+        width: 4vh;
+        /* Required for iOS handle to overflow the height of the track */
+        overflow: visible;
+    }
+    ion-toolbar.cartBar {
+        margin-bottom: 5px;
+    }
+}
+
+ion-row.veg {
+    align-items: center;
+    ion-col {
+        display: flex;
+        align-items: center;
+        ion-label {
+            ion-text {
+                font-weight: 500;
+                font-size: 0.85rem;
+            }
+        }
+        ion-toggle {
+            margin-right: 4px;
+        }
+    }
+}
+
+ion-list-header {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5vh;
+}
+
+
+ion-footer {
+    background: var(--ion-color-white);
+    ion-toolbar {
+        position: relative;
+        width: 90%;
+        margin: auto;
+        transform: translateY(-15%);
+        border-radius: 15px;
+        padding-bottom: 0;
+        border: 1px solid rgba(2, 52, 54, 0.08);
+    }
+    h4, p {
+        margin-left: 5%;
+    }
+    p {
+        font-size: 0.55rem !important;
+        letter-spacing: 0.5px;
+    }
+}
+
+ion-title {
+    ion-label {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+}
+
+ion-searchbar.srchBar {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+.date-slide{
+    // margin-top: 10px;
+    transform: translateY(5%);
+    width: 94%;
+    margin: auto;
+    swiper-container {
+        --swiper-pagination-color: var(--ion-color-secondary);
+        swiper-slide {
+            
+        }
+    }
+}
+.category-slide{
+    // margin-top: 10px;
+    
+    width: 100%;
+    margin: 10px;
+}
+.card{
+    font-weight: 600;
+    display: flex;
+    cursor: pointer;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 4px;
+
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(216, 216, 216);
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    -webkit-box-flex: 0;
+    .title{
+        display: flex;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        padding: 0px;
+        flex: 0 0 auto;
+        order: 0;
+        -webkit-box-flex: 0;
+        h4{
+            font-size: 12px;
+            font-weight: 900;
+            display: block;
+            margin-top: 5px;
+            line-height: 10px;
+            -webkit-box-align: center;
+            align-items: center;
+            text-align: center;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgb(149, 149, 149);
+            flex: 0 0 auto;
+            order: 0;
+            -webkit-box-flex: 0;
+            margin-bottom: 2px;
+        }
+        h3{
+            font-size: 16px;
+            font-weight: 900;
+            display: block;
+            line-height: 14px;
+            margin-top: 5px;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            text-align: center;
+            color: rgb(56, 56, 56);
+            flex: 0 0 auto;
+            order: 1;
+            -webkit-box-flex: 0;
+        }
+    }
+    .chef_count{
+        font-size: 12px;
+        line-height: 12px;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        text-align: center;
+        color: rgb(149, 149, 149);
+        margin-top: auto;
+        flex: 0 0 auto;
+        order: 1;
+        -webkit-box-flex: 0;
+    }
+}
+.card-selected{
+    background: rgb(56, 56, 56);
+    .title{
+
+        h4{
+            color: rgb(247, 198, 71);
+        }
+        h3{
+            color: rgb(255, 255, 255);
+        }
+    }
+    .chef_count{
+        color: rgb(255, 255, 255);
+        opacity: 0.7;
+    }
+}
+.chef-desc{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.unavailable{
+    opacity: 0.5;
+    .card{
+        cursor: none;
+        background: rgb(56, 56, 56);
+        .title{
+            text-decoration: line-through;
+            h4{
+                color: rgb(247, 198, 71);
+            }
+            h3{
+                color: rgb(255, 255, 255);
+            }
+        }
+        .chef_count{
+            color: rgb(255, 255, 255);
+            opacity: 0.7;
+        }
+    }
+}
+.chef-data{
+    
+    .chef-img{
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        width: 50px;
+        border: 4px solid white;
+        border-radius: 50%;
+    }
+}

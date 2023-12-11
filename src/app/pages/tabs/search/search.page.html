@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-searchbar
+      animated="true"
+      debounce="800"
+      #searchInput
+      inputmode="search"
+      (ionInput)="onSearchChange($event)"></ion-searchbar>
+      <!--  (ionInput)="onSearchChange($event, 'input')" -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <app-loading-chef *ngIf="isLoading"></app-loading-chef>
+
+  <app-empty-screen *ngIf="!isLoading && (chefs?.length == 0 || query?.length == 0)" [model]="model"></app-empty-screen>
+
+  <ion-list *ngIf="!isLoading && chefs.length > 0">
+    <ion-list-header>
+      <ion-label>
+        <h4>Search results for "{{query}}"</h4>
+      </ion-label>
+    </ion-list-header>
+    <app-chef 
+      *ngFor="let chef of chefs"
+      [chef]="chef"
+      [routerLink]="['/', 'tabs', 'chefs', chef.id]"></app-chef>
+  </ion-list>
+
+</ion-content>

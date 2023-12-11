@@ -1,0 +1,22 @@
+ion-input, ion-text {
+    font-size: 0.9rem;
+}
+
+ion-card {
+    margin: 1vh 4vh 0 4vh;
+    padding: 3vh 1.5vh;
+    border-radius: 20px;
+}
+
+div.submit_button {
+    ion-button {
+        margin: 5vh 0 0 0;
+    }
+}
+div.guest {
+    position: absolute;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    margin-bottom: 5vh;
+}

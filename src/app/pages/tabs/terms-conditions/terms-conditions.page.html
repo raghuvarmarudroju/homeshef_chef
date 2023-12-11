@@ -1,0 +1,21 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios">
+    <ion-title color="dark">Terms and Conditions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item  [innerHTML]="terms">
+    
+  </ion-item>
+  
+</ion-content>
+<ion-footer class="terms">
+  <ion-row >
+    <ion-col size="12" >
+      <ion-button expand="block" color="danger" (click)="agreeTerms()">
+        <ion-text>AGREE</ion-text>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

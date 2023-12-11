@@ -1,0 +1,63 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios">
+    <ion-title color="dark">UPDATE TIMINGS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ion-list formArrayName="timings" *ngFor="let piece of form.get('timings')['controls']; let i=index"  class="ion-padding-horizontal ion-margin-bottom" >
+        <ion-list [formGroupName]="i">
+          <ion-item-divider mode="md" color="light">
+            <ion-label class="ion-no-margin" color="dark">{{ form.get('timings')['controls'][i].value.category_name }}</ion-label>
+          </ion-item-divider>
+          <ion-item>
+            <ion-label class="ion-no-margin" color="dark">Cuttoff Timings</ion-label>
+            <ion-item>
+              <ion-datetime-button datetime="{{'start_time'+i}}"></ion-datetime-button>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime id="{{'start_time'+i}}" presentation="time" hourCycle="h23" formControlName="start_time"></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
+            <ion-item>
+              <ion-datetime-button datetime="{{'end_time'+i}}"></ion-datetime-button>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime id="{{'end_time'+i}}" presentation="time" hourCycle="h23" formControlName="end_time"></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
+          </ion-item>
+          <ion-item>
+            <ion-label class="ion-no-margin" color="dark">Delivery Timings</ion-label>
+            <ion-item>
+              <ion-datetime-button datetime="{{'delivery_pickup_time'+i}}"></ion-datetime-button>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime id="{{'delivery_pickup_time'+i}}" presentation="time" hourCycle="h23" formControlName="delivery_pickup_time"></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
+            <ion-item>
+              <ion-datetime-button datetime="{{'delivery_pickup_end_time'+i}}"></ion-datetime-button>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime id="{{'delivery_pickup_end_time'+i}}" presentation="time" hourCycle="h23" formControlName="delivery_pickup_end_time"></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
+          </ion-item>
+        </ion-list>
+    </ion-list>
+
+    <div class="ion-padding-horizontal ion-text-center">
+      <ion-button *ngIf="!isSubmitted" expand="block" type="submit" color="primary"
+      [disabled]="!form?.valid">UPDATE</ion-button>
+      <ion-button *ngIf="isSubmitted" color="primary" [disabled]="!form?.valid">
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

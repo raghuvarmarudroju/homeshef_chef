@@ -1,0 +1,28 @@
+ion-content {
+    div {
+        margin-top: 5vh;
+        ion-card {
+            padding: 10px;
+            ion-label {
+                letter-spacing: 0.5px;
+                font-size: 0.9rem;
+            }   
+            .rate {
+                margin-top: 2vh;
+                margin-bottom: 2vh;
+            }
+            ion-textarea {
+                --background: var(--ion-color-light);
+                --border-radius: 5px;
+            }
+        }
+    }
+}
+
+ion-footer {
+    ion-button {
+        ion-text {
+            font-size: 1rem;
+        }
+    }
+}

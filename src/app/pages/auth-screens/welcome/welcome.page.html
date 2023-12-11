@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true">
+
+  <swiper-container
+    [modules]="swiperModules"
+    [pagination]="{clickable: true}"
+    [keyboard]="true">
+
+    <swiper-slide>
+      <div [ngStyle]="{'background-image' : 'url(assets/onboarding_screens/1.jpg)'}" class="ion-text-right">
+        <ion-button fill="clear" color="light" [strong]="true" (click)="goToLogin()" class="skip">SKIP</ion-button>
+      </div>
+    </swiper-slide>
+
+    <swiper-slide>
+      <div [ngStyle]="{'background-image' : 'url(assets/onboarding_screens/2.jpg)'}" class="ion-text-right">
+        <ion-button fill="clear" color="light" [strong]="true" (click)="goToLogin()" class="skip">SKIP</ion-button>
+      </div>
+    </swiper-slide>
+
+    <swiper-slide>
+      <div [ngStyle]="{'background-image' : 'url(assets/onboarding_screens/3.jpg)'}" class="ion-text-center">
+        <ion-button shape="round" color="light" (click)="goToLogin()" class="transformButton" [strong]="true">
+          <ion-text color="primary">
+            Let's Start
+          </ion-text>
+        </ion-button>
+      </div>
+    </swiper-slide>
+
+  </swiper-container>
+
+</ion-content>

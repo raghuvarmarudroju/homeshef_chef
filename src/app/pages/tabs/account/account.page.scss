@@ -1,0 +1,49 @@
+p {
+    font-size: 0.8rem;
+}
+ion-item.profile {
+    --padding-start: 5px;
+    ion-avatar {
+        ion-fab {
+            width: 15px;
+            height: 15px;
+            margin-left: -15px;
+            ion-fab-button {
+                width: 15px;
+                height: 15px;
+                --background: transparent;
+                ion-icon {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+    ion-label {
+        p {
+            margin-top: 3px;
+        }
+    }
+}
+
+ion-list {
+    background: transparent;
+    ion-list-header {
+        align-items: center;
+        ion-label {
+            margin: 0 !important;
+        }
+        ion-button {
+            margin-top: 6px;
+        }
+    }
+}
+
+div {
+    ion-button {
+        height: 2.5rem;
+        ion-text {
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+    }
+}

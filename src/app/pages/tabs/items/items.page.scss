@@ -1,0 +1,74 @@
+.ios {
+    ion-buttons.bck {
+        margin-top: 8px;
+    }
+    ion-toggle {
+        --handle-width: 2vh;
+    }
+    ion-toggle::part(track) {
+        height: 2.5vh;
+        width: 4vh;
+        /* Required for iOS handle to overflow the height of the track */
+        overflow: visible;
+    }
+    ion-toolbar.cartBar {
+        margin-bottom: 5px;
+    }
+}
+
+ion-row.veg {
+    align-items: center;
+    ion-col {
+        display: flex;
+        align-items: center;
+        ion-label {
+            ion-text {
+                font-weight: 500;
+                font-size: 0.85rem;
+            }
+        }
+        ion-toggle {
+            margin-right: 4px;
+        }
+    }
+}
+
+ion-list-header {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5vh;
+}
+
+
+ion-footer {
+    background: var(--ion-color-white);
+    ion-toolbar {
+        position: relative;
+        width: 90%;
+        margin: auto;
+        transform: translateY(-15%);
+        border-radius: 15px;
+        padding-bottom: 0;
+        border: 1px solid rgba(2, 52, 54, 0.08);
+    }
+    h4, p {
+        margin-left: 5%;
+    }
+    p {
+        font-size: 0.55rem !important;
+        letter-spacing: 0.5px;
+    }
+}
+
+ion-title {
+    ion-label {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+}
+
+ion-searchbar.srchBar {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}

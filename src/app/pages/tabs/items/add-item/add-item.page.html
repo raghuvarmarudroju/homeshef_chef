@@ -1,0 +1,179 @@
+<ion-header slot="fixed" class="ion-no-border">
+
+    <ion-toolbar>
+        <ion-title><ion-label color="dark">ADD ITEM</ion-label></ion-title>
+        <ion-buttons slot="start" mode="md">
+            <ion-back-button defaultHref="/tabs/menu" color="dark"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true">
+    <form [formGroup]="form" *ngIf="!isLoading">
+        <ion-item-group class="ion-padding">
+            <ion-item>
+                <ion-input label="Name" labelPlacement="floating" type="text" [class.invalid]="!form.get('name').valid" autocomplete autocorrect
+                    formControlName="name"></ion-input>
+                <ion-icon name="checkmark-outline" slot="end" color="primary" *ngIf="form.get('name').valid"></ion-icon>
+            </ion-item>
+            <ion-item>
+                <ion-input label="Description" labelPlacement="floating" type="text" autocomplete autocorrect
+                    formControlName="description"></ion-input>
+                <ion-icon name="checkmark-outline" slot="end" color="primary"
+                    *ngIf="form.get('description').valid"></ion-icon>
+            </ion-item>
+            <ion-item>
+                <ion-select label="Limit Item" placeholder="Item Availability" formControlName="availability">
+                    <ion-select-option *ngFor="let flag of availabilityFlags" [value]="flag.value">
+                        {{flag.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item-divider mode="md" color="light" *ngIf="form.value.availability != 0">
+                <ion-label class="ion-no-margin" color="dark">Start Date</ion-label>
+            </ion-item-divider>
+            <ion-item *ngIf="form.value.availability != 0">
+                <ion-datetime-button datetime="datetime"></ion-datetime-button>
+                <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                        <ion-datetime id="datetime" displayFormat="MM/DD/YYYY" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="start_date" (ngModelChange)="nameChanged($event)"></ion-datetime>
+                    </ng-template>
+                </ion-modal>
+            </ion-item>
+            <ion-item-divider mode="md" color="light"
+                *ngIf="form.value.availability != 0  && (form.value.availability == 3 || form.value.availability == 4)">
+                <ion-label class="ion-no-margin" color="dark">End Date</ion-label>
+            </ion-item-divider>
+            <ion-item
+                *ngIf="form.value.availability != 0 && (form.value.availability == 3 || form.value.availability == 4)">
+                <ion-datetime-button datetime="datetime2"></ion-datetime-button>
+                <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                        <ion-datetime id="datetime2" displayFormat="MM/DD/YYYY" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="end_date"></ion-datetime>
+                    </ng-template>
+                </ion-modal>
+            </ion-item>
+            <ion-item-divider mode="md" color="light">
+                <ion-label class="ion-no-margin" color="dark">Item Days of Week Availability</ion-label>
+            </ion-item-divider>
+            <ion-item *ngFor="let item of weekDays; index as i;">
+                <ion-checkbox [checked]="item.selected" [value]="item.v"
+                    (ionChange)="alterWeekDaysSelection(i, $event)">{{item.name}}</ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-input label="Limit Item Availability" type="number" labelPlacement="floating" autocomplete
+                    autocorrect formControlName="perDayItemCookedCount"></ion-input>
+                <ion-icon name="checkmark-outline" slot="end" color="primary"
+                    *ngIf="form.get('perDayItemCookedCount').valid"></ion-icon>
+            </ion-item>
+            <ion-item>
+                <ion-input label="Price" type="number" labelPlacement="floating" (ionInput)="observePrice($event)"
+                    autocomplete autocorrect formControlName="price"></ion-input>
+                <ion-icon name="checkmark-outline" slot="end" color="primary"
+                    *ngIf="form.get('price').valid"></ion-icon>
+            </ion-item>
+            <ng-container *ngIf="form.value.price">
+                <ion-item-divider mode="md" color="light" [ngStyle]="{'margin':'20px 10px'}">
+                    <ion-label class="ion-no-margin" color="dark">Price Breakdown</ion-label>
+                </ion-item-divider>
+                <div [ngStyle]="{'padding':'10px 10px'}">
+                    <div fxFlexLayout="row wrap">
+                        <div [ngStyle]="{'padding':'10px 10px','background':'rgb(232, 255, 233)'}">
+                            <span>You earn ₹{{chefEarnings | number: '0.2-2'}} from each dish sold!</span>
+                        </div>
+                    </div>
+                    <div fxFlexLayout="row wrap">
+                        <div f class="px-3 pt-2 pb-2"
+                            [ngStyle]="{'padding':'10px 10px','background':'rgb(247, 247, 247)'}">
+                            <span>Margin of ₹{{wpflMarginValue | number: '0.2-2'}} ({{wpflMarginPercent | number:
+                                '0.2-2'}})% to WPFL from each dish sold!</span>
+                        </div>
+                    </div>
+                    <div fxFlexLayout="row wrap">
+
+                        <div f class="px-3 pt-2 pb-2"
+                            [ngStyle]="{'padding':'10px 10px','background':'rgb(255, 234, 236)'}">
+                            <span>GST ₹{{gstValue | number: '0.2-2'}} ({{gstPercent | number: '0.2-2'}})% from the WPFL
+                                margin!</span>
+                        </div>
+                    </div>
+                    <div fxFlexLayout="row wrap">
+
+                        <div f class="px-3 pt-2 pb-2"
+                            [ngStyle]="{'padding':'10px 10px','background':'rgb(255, 234, 236)'}">
+                            <span>TDS ₹{{tdsValue}} ({{tdsPercent}})% paid to government!</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ion-item>
+                <ion-select label="Food Type" placeholder="Food Type" formControlName="types">
+                    <ion-select-option *ngFor="let foodType of foodTypes" [value]="foodType.id">
+                        {{foodType.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-input label="Size" type="text" labelPlacement="floating" autocomplete autocorrect
+                    formControlName="size"></ion-input>
+                <ion-select label="Size Unit" placeholder="Size Unit" formControlName="unit">
+                    <ion-select-option *ngFor="let unity of units" [value]="unity.id">
+                        {{unity.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-input label="Expires In" type="text" labelPlacement="floating" autocomplete autocorrect
+                    formControlName="expiresIn"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-select label="Ingredients" placeholder="Ingredients" formControlName="ingredients"
+                    [multiple]="true" (ionChange)="handleIngredients($event)">
+                    <ion-select-option *ngFor="let ing of ingredients" [value]="ing.id">
+                        {{ing.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-select label="Food Tags" placeholder="Food Tags" formControlName="tags" [multiple]="true"
+                    (ionChange)="handleTags($event)">
+                    <ion-select-option *ngFor="let ing of foodTags" [value]="ing.id"> {{ing.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-textarea label="Reheating Instructions" labelPlacement="floating" autocomplete [autoGrow]="true"
+                    autocorrect formControlName="reheatingInstructions"></ion-textarea>
+                <ion-icon name="checkmark-outline" slot="end" color="primary"
+                    *ngIf="form.get('reheatingInstructions').valid"></ion-icon>
+            </ion-item>
+            <ion-item>
+                <ion-select label="Spice Level" placeholder="Spice Level" formControlName="spiceLevel">
+                    <ion-select-option value="Not Spicy">Not Spicy</ion-select-option>
+                    <ion-select-option value="Mild">Mild</ion-select-option>
+                    <ion-select-option value="Medium">Medium</ion-select-option>
+                    <ion-select-option value="Hot">Hot</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-textarea label="Comments" labelPlacement="floating" autocomplete [autoGrow]="true" autocorrect
+                    formControlName="comment"></ion-textarea>
+                <ion-icon name="checkmark-outline" slot="end" color="primary"
+                    *ngIf="form.get('comment').valid"></ion-icon>
+            </ion-item>
+            <ion-item  class="profile">
+                <ion-img [src]="itemImage" alt="The Wisconsin State Capitol building in Madison, WI at night" (click)="editPicture()">
+                    <ion-fab vertical="bottom" horizontal="right">
+                        <ion-fab-button color="white">
+                            <ion-icon name="create-outline"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab>
+                </ion-img>
+            </ion-item>
+        </ion-item-group>
+        <div class="ion-padding-horizontal ion-padding-top">
+            <ion-button expand="block" type="submit" color="primary" (click)="onSubmit()">SAVE & PROCEED
+            </ion-button>
+            <ion-button *ngIf="isSubmitted" expand="block" color="primary">
+                <ion-spinner name="crescent"></ion-spinner>
+            </ion-button>
+        </div>
+    </form>
+</ion-content>

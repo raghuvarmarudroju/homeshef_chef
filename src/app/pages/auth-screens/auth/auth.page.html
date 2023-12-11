@@ -1,0 +1,37 @@
+<ion-content [fullscreen]="true">
+
+  <div class="logo" align="center">
+    <img src="https://momsmeal.topchop.in/assets/images/logo.png" />
+  </div>
+  <div class="seg" (ionChange)="segmentChanged($event)">
+    <ion-segment mode="ios" [value]="segmentValue">
+      <ion-segment-button value="1">
+        <ion-label>Log In</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        <ion-label>Sign Up</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <app-sign-in *ngIf="segmentValue == '1'" (resetPwd)="openResetPwdModal($event)"></app-sign-in>
+  <app-sign-up *ngIf="segmentValue == '2'"></app-sign-up>
+
+  <ion-modal
+    #forgot_pwd_modal
+    [isOpen]="resetPwd"
+    cssClass="inline_modal"
+    (didDismiss)="reset($event)"
+    [breakpoints]="[0.1, 0.5, 0.9]"
+    [initialBreakpoint]="0.5">
+    <ng-template>
+      <app-reset-password
+        [model]="resetPwdModel"
+        (check_email)="sendResetPasswordEmailOtp($event)"
+        (verify_otp)="verifyResetPasswordOtp($event)"
+        (set_password)="resetPassword($event)">
+      </app-reset-password>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

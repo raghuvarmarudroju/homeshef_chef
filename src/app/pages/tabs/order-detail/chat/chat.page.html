@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title (click)="scrollToTop()">CUSTOMER SUPPORT</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="getPreviousUrl()"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+  [scrollEvents]="true">
+
+  <ion-list 
+    lines="none" 
+    *ngIf="(chats | async)?.length > 0">
+    <ion-item-group class="chats-group" *ngFor="let chat of (chats | async)">
+      <app-chat-box [chat]="chat"></app-chat-box>
+    </ion-item-group>
+  </ion-list>
+
+  <app-empty-screen *ngIf="(chats | async)?.length == 0" [model]="model"></app-empty-screen>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-textarea
+      autoGrow 
+      rows="1" 
+      placeholder="Send message" 
+      class="ion-text-center" 
+      [(ngModel)]="message">
+    </ion-textarea>
+    <ion-buttons slot="end">
+      <!--  *ngIf="message && message.trim() != ''" -->
+      <ion-fab-button 
+        *ngIf="!isLoading" 
+        [disabled]="!message || message?.trim() == ''" 
+        color="primary" 
+        size="large"
+        (click)="sendMessage()">
+        <ion-icon name="send"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="isLoading" color="primary" size="large">
+        <ion-spinner name="crescent" color="white"></ion-spinner>
+      </ion-fab-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

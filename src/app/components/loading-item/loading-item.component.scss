@@ -1,0 +1,19 @@
+ion-list {
+    ion-item {
+        margin-bottom: 3vh;
+        div[slot="end"] {
+            position: relative;
+            height: 14vh;
+            width: 15vh;
+            ion-thumbnail {
+                height: 12vh;
+                width: 100%;
+                ion-skeleton-text {
+                    border-radius: 10px;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

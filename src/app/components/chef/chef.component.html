@@ -1,0 +1,24 @@
+<ion-item lines="none">
+  <ion-thumbnail slot="start">
+    <img [src]="chef.cover" />
+  </ion-thumbnail>
+  <ion-label>
+    <h4>{{chef?.name}}</h4>
+    <ion-text color="medium">
+      <p class="pStyle">
+        {{getCuisine(chef?.cuisines)}}
+      </p>
+    </ion-text>
+    <span *ngIf="chef?.rating > 0">
+      <ion-icon name="star"></ion-icon>
+      {{chef?.rating}} .
+    </span>
+    {{chef?.delivery_time}} mins . ₹{{chef?.price}} for two
+    <ion-text color="tertiary" *ngIf="chef?.distance && chef?.distance != 0">
+      <p class="distance">{{chef?.distance | number: '0.0-2'}} kms away</p>
+    </ion-text>
+    <ion-text color="tertiary" *ngIf="chef?.distance == 0">
+      <p class="distance">Few steps away</p>
+    </ion-text>
+  </ion-label>
+</ion-item>

@@ -1,0 +1,78 @@
+ion-img {
+    border-radius: 5px;
+}
+
+ion-input {
+    font-size: 0.8rem;
+}
+
+ion-item {
+    letter-spacing: 0.5px;
+    ion-text {
+        font-size: 0.85rem;
+    }
+    ion-label {
+        font-size: 0.86rem;
+    }
+}
+ion-item.cartData {
+    --padding-start: 0.5vh;
+    --padding-end: 0.5vh;
+}
+
+.colStyle {
+    background-color: var(--ion-color-success);
+}
+
+ion-list, .offer {
+    border-radius: 10px;
+    margin: 10px;
+}
+
+ion-list.coupon {
+    background: transparent;
+    ion-item-divider {
+        padding-left: 5px;
+        border-bottom: 0;
+    }
+    ion-item {
+        margin: 10px 0 0 0;
+    }
+}
+
+.finalAmt {
+    background-color: var(--ion-color-light);
+    display: flex;
+    align-items: center;
+}
+
+ion-item.selected_coupon {
+    ion-label {
+        p {
+            ion-icon {
+                margin-right: 5px;
+                // vertical-align: middle;
+                font-size: 0.7rem;
+            }
+            margin-top: 5px;
+            ion-text {
+                font-size: 0.75rem !important;
+            }
+            .coupon_text {
+                font-weight: 450;
+                color: dimgray;
+            }
+        }
+    }
+}
+
+ion-footer {
+    ion-text, p {
+        font-size: 0.7rem;
+    }
+    ion-col {
+        ion-label {
+            margin-left: 5px;
+        }
+    }
+}

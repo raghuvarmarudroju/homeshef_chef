@@ -1,0 +1,28 @@
+<ion-header slot="fixed" class="ion-no-border">
+
+  <ion-toolbar>
+      <ion-title><ion-label color="dark">Update Cuisines</ion-label></ion-title>
+      <ion-buttons slot="start" mode="md">
+          <ion-back-button defaultHref="/tabs/menu" color="dark"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true">
+      <ion-item-group class="ion-padding" *ngIf="cuisines?.length > 0 || chefCuisines?.length > 0">
+          <ion-item-divider mode="md" color="light">
+              <ion-label class="ion-no-margin" color="dark">Select the cuisines</ion-label>
+          </ion-item-divider>
+          <ion-item *ngFor="let item of cuisines; index as i;">
+              <ion-checkbox [checked]="item.selected" [value]="item.id"
+                  (ionChange)="cuisineSelection($event)">{{item.name}}</ion-checkbox>
+          </ion-item>
+
+      </ion-item-group>
+      <div class="ion-padding-horizontal ion-padding-top">
+          <ion-button *ngIf="!isSubmitted" expand="block" type="submit" color="primary" (click)="onSubmit()">SAVE & PROCEED
+          </ion-button>
+          <ion-button *ngIf="isSubmitted" expand="block" color="primary">
+              <ion-spinner name="crescent"></ion-spinner>
+          </ion-button>
+      </div>
+</ion-content>
