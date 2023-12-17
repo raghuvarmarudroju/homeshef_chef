@@ -60,7 +60,7 @@ export class MenuService {
   public getFoodTags(): Observable<any> {
     return this.http.get('food_tags');
   }
-  public getIngredients(): Observable<any[]>{
+  public getIngredients(): Observable<any>{
     return this.http.get('ingredients',httpOptions);
   }
   public getUnits(): Observable<any> {

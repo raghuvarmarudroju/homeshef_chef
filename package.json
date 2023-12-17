@@ -38,12 +38,15 @@
     "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.0.0",
+    "@ionic/cordova-builders": "^10.0.0",
     "@ionic/pwa-elements": "^3.2.2",
     "@ngx-translate/core": "^15.0.0",
     "capacitor-call-number": "^1.0.3",
     "capacitor-native-settings": "^5.0.0",
     "cordova-browser": "7.0.0",
+    "cordova-ios": "6.3.0",
     "cordova-plugin-request-location-accuracy": "^2.3.0",
+    "cordova-res": "^0.15.4",
     "ionicons": "^7.0.0",
     "moment": "^2.29.4",
     "ng-otp-input": "^1.9.2",
@@ -103,7 +106,8 @@
     },
     "platforms": [
       "android",
-      "browser"
+      "browser",
+      "ios"
     ]
   }
 }

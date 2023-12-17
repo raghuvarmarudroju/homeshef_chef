@@ -21,6 +21,10 @@ export const routes: Routes = [
         loadComponent: () => import('./account/account.page').then( m => m.AccountPage)
       },
       {
+        path: 'address',
+        loadComponent: () => import('./address/address.page').then( m => m.AddressPage)
+      },
+      {
         path: 'menu',
         children: [
           {
@@ -41,6 +45,14 @@ export const routes: Routes = [
             loadComponent: () => import('./cuisines/cuisines.page').then( m => m.CuisinesPage)
           },
         ]
+      },
+      {
+        path: 'payment',
+        loadComponent: () => import('./payment/payment.page').then( m => m.PaymentPage)
+      },
+      {
+        path: 'reviews',
+        loadComponent: () => import('./reviews/reviews.page').then( m => m.ReviewsPage)
       },
       {
         path: 'cart',
@@ -163,5 +175,13 @@ export const routes: Routes = [
   {
     path: 'terms-conditions',
     loadComponent: () => import('./terms-conditions/terms-conditions.page').then( m => m.TermsConditionsPage)
+  },
+  {
+    path: 'payment',
+    loadComponent: () => import('./payment/payment.page').then( m => m.PaymentPage)
+  },
+  {
+    path: 'reviews',
+    loadComponent: () => import('./reviews/reviews.page').then( m => m.ReviewsPage)
   },
 ];

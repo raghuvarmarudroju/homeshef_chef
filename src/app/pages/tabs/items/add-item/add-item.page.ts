@@ -12,6 +12,7 @@ import { Strings } from 'src/app/enum/strings.enum';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { HttpService } from 'src/app/services/http/http.service';
+import { forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-add-item',
@@ -103,47 +104,38 @@ export class AddItemPage implements OnInit {
 
   async checkForUpdate() {
     this.isLoading = true;
+    this.observePrice(0);
     this.initForm();
   }
 
   initForm() {
-    this.getUnits();
-    this.formData();
-    this.getFoodTags();
-    this.getFoodTypes();
-    this.getIngredients();
-    //this.getShefs();
-    this.observePrice(0);
-    
-  }
-  public getShefs() {
-    this.menuService.getShefs().subscribe((res) => {
-      console.log(res);
-    });
-  }
+    forkJoin({
+      foodTags: this.menuService.getFoodTags(),
+      ingredients: this.menuService.getIngredients(),
+      units : this.menuService.getUnits(),
+      foodTypes : this.menuService.getFoodTypes()
 
-  public getFoodTags() {
-    this.menuService.getFoodTags().subscribe((res) => {
-      this.foodTags = res.data.food_tags;
-    });
-  }
+    })
+    .pipe(
+      map(response => {
+        const foodTags = <Array<any>>response.foodTags.data.food_tags;
+        const ingredients = <Array<any>>response.ingredients.data.ingredients;
+        const units = <Array<any>>response.units.data.size_units;
+        const foodTypes = <Array<any>>response.foodTypes.data;
+        
+        this.foodTags = foodTags;
+        this.ingredients = ingredients;
+        this.units = units;
+        this.foodTypes = foodTypes;
 
-  public getIngredients() {
-    this.menuService.getIngredients().subscribe((res : any) => {
-      this.ingredients = res.data.ingredients;
+        console.log("result ", this.foodTags)
+      })
+    )
+    .subscribe((data) => {
+      console.log(data)
+      
     });
-  }
-
-  public getUnits() {
-    this.menuService.getUnits().subscribe((res : any) => {
-      this.units = res.data.size_units;
-    });
-  }
-
-  public getFoodTypes() {
-    this.menuService.getFoodTypes().subscribe((res) => {
-      this.foodTypes = res.data.categories;
-    });
+    this.formData();    
   }
   async formData() {
     this.form = new FormGroup({
@@ -156,7 +148,7 @@ export class AddItemPage implements OnInit {
       endDate: new FormControl(this.dates.endDate),
       perDayItemCookedCount: new FormControl(0, {validators: [Validators.required]}),
       price: new FormControl(0, {validators: [Validators.required]}),
-      types: new FormControl(4, {validators: [Validators.required]}),
+      types: new FormControl(null, {validators: [Validators.required]}),
       unit: new FormControl('', {validators: [Validators.required]}),
       size: new FormControl(0, {validators: [Validators.required]}),
       expiresIn: new FormControl(0, {validators: [Validators.required]}),

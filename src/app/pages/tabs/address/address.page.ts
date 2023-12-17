@@ -1,110 +1,183 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { Address } from 'src/app/models/address.model';
-import { Subscription } from 'rxjs';
-import { GlobalService } from 'src/app/services/global/global.service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IonicModule, NavController } from '@ionic/angular';
 import { AddressService } from 'src/app/services/address/address.service';
-import { NavigationExtras, Router, RouterModule } from '@angular/router';
-import { EmptyScreenComponent } from 'src/app/components/empty-screen/empty-screen.component';
+import { GlobalService } from 'src/app/services/global/global.service';
+import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
+import { ActivatedRoute } from '@angular/router';
+import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
+import { MapComponent } from 'src/app/components/map/map.component';
+import { Strings } from 'src/app/enum/strings.enum';
+import { HttpService } from 'src/app/services/http/http.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-address',
   templateUrl: './address.page.html',
   styleUrls: ['./address.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule, EmptyScreenComponent]
+  imports: [IonicModule, CommonModule, ReactiveFormsModule, MapComponent]
 })
-export class AddressPage  implements OnInit, OnDestroy {
+export class AddressPage implements OnInit {
 
-  isLoading: boolean;
-  addresses: Address[] = [];
-  addressesSub: Subscription;
-  model = {
-    title: 'No Addresses added yet',
-    icon: 'location-outline'
-  };
+  form: FormGroup;
+  isSubmitted = false;
+  location: any = {};
+  isLocationFetched: boolean;
+  center: any;
+  update: boolean;
+  id: any;
+  uid: string;
+  isLoading: boolean = false;
+  from: string;
+  check: boolean = false;
+  chef: any;
 
   constructor(
-    private global: GlobalService,
+    private navCtrl: NavController,
     private addressService: AddressService,
-    private router: Router) { }
+    private global: GlobalService,
+    private httpService: HttpService,
+    private authService: AuthService,
+    private maps: GoogleMapsService,
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef) { }
 
-  ngOnInit() {
-    this.addressesSub = this.addressService.addresses.subscribe({
-      next: address => {
-        console.log('addresses: ', address);
-        this.addresses = address;      
+  async ngOnInit() {
+    this.formData(null);
+    const id = await this.authService.getId();
+
+    console.log("check id: ", id);
+    if (!id) {
+      this.navCtrl.back();
+      return;
+    }
+    this.uid = id;
+    
+    this.checkForUpdate();
+  }
+
+  async checkForUpdate() {
+    this.isLoading = true;
+    this.location.title = 'Locating...';
+    this.isLocationFetched = false;
+    this.initForm();
+  }
+
+  async initForm() {
+    await this.httpService.get("chef/" + this.uid).subscribe((chef: any) => {
+      if(chef.status == 200){
+        this.chef = chef.data.results;
+        let data = chef.data.results.chef_address;
+        this.center = {
+          lat: data.lat,
+          lng: data.lng
+        };
+        this.id = data.id;
+        this.formData(data);
+        this.isLoading = false;
+        this.location = data;
       }
     });
-    this.getAddresses();
+ 
+    
+  }
+  formData(data?) {
+    this.form = new FormGroup({
+      floor: new FormControl(data?.floor, {validators: [Validators.required]}),
+      house: new FormControl(data?.house, {validators: [Validators.required]}),
+      block: new FormControl(data?.block, {validators: [Validators.required]}),
+    });
+    this.isLoading = false;
+  }
+  fetchLocation(event) {
+    this.location = event;
+    console.log('location: ', this.location);
+    this.isLocationFetched = true;
+    this.cdr.detectChanges();
+  }
+  
+  toggleFetched() {
+    this.isLocationFetched = !this.isLocationFetched;
   }
 
-  ionViewDidEnter() {
-    console.log('ionViewDidEnter AddressPage');
-    this.global.customStatusbar();
+  toggleSubmit() {
+    this.isSubmitted = !this.isSubmitted;
   }
 
-  async getAddresses() {    
+  async onSubmit() {
     try {
-      this.isLoading = true;
-      // this.global.showLoader();
-      const addresses = await this.addressService.getAddresses();
-      console.log('addresses list: ', addresses);
-      this.isLoading = false;
-      // this.global.hideLoader();
+      this.toggleSubmit();
+      console.log(this.form);
+      if(!this.form.valid) {
+        this.toggleSubmit();
+        return;
+      }
+      const data = {
+        floor: this.form.value.floor,
+        house: this.form.value.house,
+        block: this.form.value.block
+      };
+        await this.httpService.put('address/'+this.id,data).subscribe((address: any) => { 
+          console.log(address);
+          if(address.status == 200){
+            this.global.successToast('Address updated');
+            this.navCtrl.back();
+          }
+        });
+      
     } catch(e) {
       console.log(e);
-      this.isLoading = false;
-      // this.global.hideLoader();
+      this.isSubmitted = false;
       this.global.errorToast();
+    }
+
+  }
+
+  loginPrompt() {
+    this.global.showAlert(
+      'You need to login to add address. Do you want to proceed to login?',
+      'Login',
+      [{
+        text: 'No',
+        role: 'cancel'
+      }, {
+        text: 'Yes',
+        handler: () => {
+          this.global.navigateByUrl(Strings.LOGIN);
+        }
+      }]
+    );
+  }
+
+  async searchLocation() {
+    try {
+      const options = {
+        component: SearchLocationComponent,
+        // cssClass: 'address-modal',
+        // swipeToClose: true,
+        breakpoints: [0, 0.5, 0.7, 0.9],
+        initialBreakpoint: 0.7,
+        // handleBehaviour: "cycle",
+        // handle: false
+      };
+      const location = await this.global.createModal(options);
+      console.log('location: ', location);
+      if(location) {
+        this.location = location;
+        const loc = {
+          lat: location.lat,
+          lng: location.lng
+        };
+        // update marker
+        this.update = true;
+        this.maps.changeMarkerInMap(loc);
+      }
+    } catch(e) {
+      console.log(e);
     }
   }
 
-  getIcon(title) {
-    return this.global.getIcon(title);
-  }
-
-  editAddress(address) {
-    console.log(address);
-    const navData: NavigationExtras = {
-      queryParams: {
-        data: JSON.stringify(address)
-      }
-    };
-    this.router.navigate([this.router.url, 'edit-address'], navData);
-  }
-
-  deleteAddress(address) {
-    console.log('address: ', address);
-    this.global.showAlert(
-      'Are you sure you want to delete this address?',
-      'Confirm',
-      [
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => {
-            console.log('cancel');
-            return;
-          }
-        },
-        {
-          text: 'Yes',
-          handler: async () => {
-            this.global.showLoader();
-            await this.addressService.deleteAddress(address);
-            this.global.hideLoader();
-          }
-        }
-      ]
-    )
-  }
-
-  ngOnDestroy() {
-    if(this.addressesSub) this.addressesSub.unsubscribe();
-    this.global.customStatusbar(true);
-  }
 
 }

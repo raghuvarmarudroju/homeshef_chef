@@ -5,6 +5,5 @@
       "enabled": false
     },
     "cordova": {}
-  },
-  "type": "angular-standalone"
+  }
 }

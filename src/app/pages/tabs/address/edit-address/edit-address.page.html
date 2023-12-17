@@ -1,14 +1,13 @@
+<ion-header slot="fixed" class="ion-no-border">
+
+  <ion-toolbar>
+    <ion-buttons slot="start" mode="md">
+      <ion-back-button defaultHref="/tabs/account" color="dark"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content fullscreen="true">
-
-  <ion-header slot="fixed" class="ion-no-border">
-
-    <ion-toolbar>
-      <ion-buttons slot="start" mode="md">
-        <ion-back-button defaultHref="/tabs/address" color="dark"></ion-back-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-
   <div *ngIf="isLoading" class="ion-text-center alignSpinner">
     <ion-spinner name="crescent" color="primary"></ion-spinner>
   </div>
@@ -30,7 +29,7 @@
       </ion-row>
       <ion-item-group class="ion-padding">
         <ion-item>
-          <ion-input label="HOUSE / FLAT / BLOCK NO." labelPlacement="floating" type="text" autocomplete autocorrect formControlName="house"></ion-input>
+          <ion-input label="HOUSE / FLAT NO" labelPlacement="floating" type="text" autocomplete autocorrect formControlName="house"></ion-input>
           <ion-icon 
             name="checkmark-outline" 
             slot="end" 
@@ -39,7 +38,7 @@
           </ion-icon>
         </ion-item>
         <ion-item>
-          <ion-input label="Floor" labelPlacement="floating" type="text" autocomplete autocorrect formControlName="floor"></ion-input>
+          <ion-input label="FLOOR" labelPlacement="floating" type="text" autocomplete autocorrect formControlName="floor"></ion-input>
           <ion-icon 
             name="checkmark-outline" 
             slot="end" 
@@ -48,7 +47,7 @@
           </ion-icon>
         </ion-item>
         <ion-item>
-          <ion-input label="Block Name" labelPlacement="floating" type="text" autocomplete autocorrect formControlName="block"></ion-input>
+          <ion-input label="BLOCK" labelPlacement="floating" type="text" autocomplete autocorrect formControlName="block"></ion-input>
           <ion-icon 
             name="checkmark-outline" 
             slot="end" 

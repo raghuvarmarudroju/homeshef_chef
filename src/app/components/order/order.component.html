@@ -14,9 +14,10 @@
       </ion-text>
     </ion-label>
     <ion-note slot="end" color="dark" class="statusText">
+      <ion-icon *ngIf="order?.status == 5" name="checkbox" color="success"></ion-icon>
+      <ion-icon *ngIf="order?.status == 6" name="close-circle" color="danger"></ion-icon>
+      <ion-icon *ngIf="order?.status == 1 || order?.status == 2 || order?.status == 4" name="restaurant" color="success"></ion-icon>
       {{order?.status == 0 ? 'Confirm pending' :delivery_status[order.status].name}}
-      <ion-icon *ngIf="order?.status == 5" name="checkmark-circle-outline" color="success"></ion-icon>
-      <ion-icon *ngIf="order?.status == 6" name="close-circle-outline" color="danger"></ion-icon>
     </ion-note>
   </ion-item>
 
@@ -43,7 +44,7 @@
       <ion-icon name="call-outline" color="white"></ion-icon>
     </ion-fab-button>
 
-    <div slot="end" *ngIf="order?.status == 'Delivered' && order?.rating">
+    <div slot="end" *ngIf="order?.status == 5 && order?.rating">
       <app-rating
         [readonly]="true"
         [initialRating]="order?.rating?.rate_rider"
@@ -56,22 +57,18 @@
 
   <ion-item lines="none">
     <ion-label>
-      <!-- <ion-note color="dark">
-        ORDER ID: {{order?.id}}
-      </ion-note> -->
       <ion-text *ngFor="let item of order?.details">
         <p class="item_qty">{{item?.product.name}} ({{item?.quantity}})</p>
       </ion-text>
-      <p class="time">{{order?.delivery_date | date: 'MMM d, y, h:mm a'}}</p>
+      <p class="time">{{order?.delivery_date | date: 'MMM d, y'}} {{order?.delivery_time}}</p>
     </ion-label>
   </ion-item>
 
   <ion-row>
 
     <ion-col 
-      *ngIf="order?.status == 'Rejected' || order?.status == 'Cancelled' || order?.status == 'Delivered'"
+      *ngIf="order?.status == 6 ||  order?.status == 5"
       size="6">
-      <!-- [offset]="(order?.status == 'Rejected' || order?.status == 'Cancelled') ? 6 : 0" -->
       <ion-button 
         fill="outline" 
         expand="block" 
@@ -118,26 +115,6 @@
         <ion-text>View</ion-text>
       </ion-button>
     </ion-col>
-    <ion-col *ngIf="order?.status == 1" size="6">
-      <ion-button 
-        (click)="cancelOrder()" 
-        expand="block" 
-        fill="outline" 
-        color="success"
-        size="small">
-        <ion-text>PROCESSING</ion-text>
-      </ion-button>
-    </ion-col>
-    <ion-col *ngIf="order?.status == 2" size="6">
-      <ion-button 
-        (click)="cancelOrder()" 
-        expand="block" 
-        fill="outline" 
-        color="success"
-        size="small">
-        <ion-text>OUT FOR DELIVERY</ion-text>
-      </ion-button>
-    </ion-col>
     <ion-col *ngIf="order?.status == 0" size="6">
       <ion-button 
         (click)="acceptOrder()" 
@@ -148,7 +125,7 @@
         <ion-text>ACCEPT</ion-text>
       </ion-button>
     </ion-col>
-    <ion-col *ngIf="order?.status == 0" size="6" >
+    <ion-col *ngIf="order?.status != 5 && order?.status != 6" size="6" >
       <ion-button 
         (click)="cancelOrder()" 
         expand="block" 

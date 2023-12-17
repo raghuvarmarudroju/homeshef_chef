@@ -53,7 +53,26 @@ export class OrderDetailPage implements OnInit, OnDestroy {
     console.log('id: ', this.id);
     await this.getOrder();
   }
-
+  async changeStatus(status) {
+    
+    try {
+      this.global.showLoader();
+      const params= {
+        id : this.id,
+        status : status
+      } 
+      this.orderService.updateStatus(params).subscribe((data:any) => { 
+        if(data.status == 200){
+          this.getOrder();
+        }
+      });
+      this.global.hideLoader();
+    } catch(e) {
+      console.log(e);
+      this.global.hideLoader();
+      this.global.errorToast();
+    }
+  }
   async getOrder() {
     try {
       this.global.showLoader();
@@ -68,22 +87,6 @@ export class OrderDetailPage implements OnInit, OnDestroy {
       this.global.hideLoader();
       this.global.checkMessageForErrorToast(e);
     }
-  //  this.orderSub = (await this.orderService.getOrder(this.id)).subscribe((order: any) => {
-  //    console.log('orderSub', order);
-  //    this.order = order; 
-  //    console.log('current order: ', this.order);
-  //    console.log('riderSub: ', this.riderSub);
-  //   if((!this.riderSub) && (this.order?.status == 'Ongoing' || this.order?.status == 'Picked')) {
-  //     console.log('current order1: ', this.order);
-  //     this.liveTrackRider();
-  //   } else if(this.riderSub && this.order?.status != 'Ongoing' && this.order?.status != 'Picked') {
-  //     console.log('current order2: ', this.order);
-  //     this.UnsubcribeProfile();
-  //   }
-  //   console.log('current order3: ', this.order);
-  //   }, e => {
-  //     console.log(e);
-  //   }); 
   }
 
   async liveTrackRider() {    
@@ -102,19 +105,6 @@ export class OrderDetailPage implements OnInit, OnDestroy {
     this.stat = event.detail.value;
   }  
 
-  async changeStatus(status) {
-    try {
-      this.global.showLoader();      
-      // const order = {...this.order, status};
-      // console.log(order);
-      await this.orderService.updateOrder(this.order, {status: status});
-      this.global.hideLoader();
-    } catch(e) {
-      console.log(e);
-      this.global.hideLoader();
-      this.global.errorToast();
-    }
-  }
 
   getBgColor(status) {
     switch(status) {

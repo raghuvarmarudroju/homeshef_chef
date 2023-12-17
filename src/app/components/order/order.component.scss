@@ -4,7 +4,7 @@ ion-card {
         padding-top: 1.5vh;
     }
     .statusText {
-        font-style: italic;
+        //font-style: italic;
     }
     
     ion-label {
@@ -29,9 +29,12 @@ ion-card {
     }
     ion-note {
         font-size: 0.87rem;
+        font-weight: bold;
         ion-icon {
-            float: right;
+            //float: right;
             padding-left: 0.2rem;
+            padding-top: 3px;
+            
         }
     }
     p {

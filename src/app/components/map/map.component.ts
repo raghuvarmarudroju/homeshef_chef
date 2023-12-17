@@ -15,8 +15,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   googleMaps: any;
   map: any;
   marker: any;
-  @Input() update = false;
-  @Input() center = { lat: 28.649944693035188, lng: 77.23961776224988 };
+  @Input() update;
+  @Input() center ;
   @Output() location: EventEmitter<any> = new EventEmitter();
   mapListener: any;
   mapChange: Subscription;
@@ -27,10 +27,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private locationService: LocationService
     ) { }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    console.log(this.center);
+    await this.initMap();
+  }
 
   async ngAfterViewInit() {
-    await this.initMap();
+    
     this.mapChange = this.maps.markerChange.subscribe({
       next: async(loc) => {
         if(loc?.lat) {
@@ -48,17 +51,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async initMap() {
     try {
-      if(!this.update) {
-        const position = await this.locationService.getCurrentLocation();
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        await this.loadMap();
-        this.getAddress(this.center.lat, this.center.lng);
-      } else {
-        await this.loadMap();
-      }
+      await this.loadMap();
     } catch(e) {
       console.log(e);
       this.center = { lat: 28.649944693035188, lng: 77.23961776224988 };

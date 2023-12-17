@@ -53,11 +53,13 @@ export class HomePage implements OnInit, OnDestroy {
   orders: any;
   public selectedCategoryId: number = 1;
   filteredOrders: any;
-  emptyScreenModel = {
-    icon: 'fast-food',
-    title: 'No Orders Placed Yet',
+  emptyScreenModel ={
+    icon: 'fast-food-outline',
+    title: 'Sorry! No orders available',
     noSpace: true,
   };
+  selectedTabId: any=1;
+  isVerified: boolean = false;
   constructor(
     private addressService: AddressService,
     private cartService: CartService,
@@ -65,24 +67,40 @@ export class HomePage implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private orderService: OrderService,
     private categoryService: CategoryService
-  ) { }
+  ) { 
+    var selectedTab = localStorage.getItem('selectedTabId');
+    if (selectedTab && selectedTab != null && selectedTab !== 'null') {
+      console.log(selectedTab);
+      this.selectedTabId = parseInt(selectedTab);
+    }else{
+      this.selectedTabId = 1;
+    }
+    
+  }
 
   ngOnInit() {
     this.isLoading = true;
-    this.getData();
+    
     this.global.customStatusbar();
     this.profileSub = this.profileService.profile.subscribe({
       next: profile => {
         console.log(profile);
-        this.profile = profile;
-        this.communityData = profile.community;
-        this.orders = profile.orders;
+        if(profile){
+          this.profile = profile;
+          if(profile?.is_verified == 1){
+            this.isVerified = true;
+          }
+          this.communityData = profile?.community;
+          this.orders = profile?.orders;
+          this.selectTab(this.selectedTabId);
+          
+          this.isLoading = false;
+          console.log(this.orders);
+        }
         
-        this.isLoading = false;
-        console.log(this.orders);
       }
     });
-   
+    this.getData();
     if(this.profile?.id){
       
     }
@@ -95,7 +113,7 @@ export class HomePage implements OnInit, OnDestroy {
       await this.addressService.checkExistAddress(this.location);
       await this.profileService.getProfile();
       this.categories = await this.categoryService.getOrderCategories();
-      this.selectCategory(this.categories[0].id);
+      
     } catch(e) {
       console.log(e);
       this.global.errorToast();
@@ -117,17 +135,20 @@ export class HomePage implements OnInit, OnDestroy {
     .then(() => {})
     .catch((e) => console.log(e));
   }
-  public selectCategory(id:any){
-    this.selectedCategoryId = id;
+  public selectTab(id:any){
+    this.selectedTabId = id;
+    localStorage.setItem('selectedTabId',id);
     if(id == 1){
-      this.filteredOrders =  this.orders.filter((item: any) =>new Date(item.delivery_date) == new Date());
+
+      this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date).toLocaleDateString() == new Date().toLocaleDateString());
     }else if(id == 2){
-      this.filteredOrders =  this.orders.filter((item: any) =>new Date(item.delivery_date) > new Date());
+      this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date) > new Date());
     }else{
-      this.filteredOrders =  this.orders.filter((item: any) =>new Date(item.delivery_date) < new Date());
+      this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date) < new Date());
     }
     //this.getMenuItems();
     //this.sidenav.close();
+    console.log(this.filteredOrders);
   }
   async cancel(order) {
     try {

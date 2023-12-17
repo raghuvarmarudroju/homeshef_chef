@@ -14,24 +14,27 @@
       </ion-label>
     </ion-item>
   </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-  <div *ngIf="isLoading"><ion-skeleton-text animated style="height: 25vh;"></ion-skeleton-text></div>
-  <app-loading-chef *ngIf="isLoading"></app-loading-chef>
   <ng-container>
     <ion-row class="borderBottom">
       <div class="category-slide">
-        <ion-segment class="segment-small" scrollable [value]="selectedCategoryId">
+        <ion-segment class="segment-small" scrollable [(ngModel)]="selectedTabId">
           <ion-segment-button *ngFor="let category of categories" [value]="category.id"
-            (click)="selectCategory(category.id)">
+            (click)="selectTab(category.id)">
             <p>{{category?.name}}</p>
           </ion-segment-button>
         </ion-segment>
       </div>
     </ion-row>
   </ng-container>
+</ion-header>
+
+<ion-content>
+  <div class="wrapper" *ngIf="!isVerified && !isLoading">
+    <h1>Verification Pending</h1>
+   </div>
+  <div *ngIf="isLoading"><ion-skeleton-text animated style="height: 25vh;"></ion-skeleton-text></div>
+  <app-loading-chef *ngIf="isLoading"></app-loading-chef>
+  
   <app-empty-screen *ngIf="!filteredOrders || filteredOrders?.length == 0" [model]="emptyScreenModel">
   </app-empty-screen>
   <app-order *ngFor="let order of filteredOrders" [order]="order" (reorder)="reorder($event)" (call)="call($event)"

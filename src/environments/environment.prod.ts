@@ -1,9 +1,9 @@
 export const environment = {
   production: true,
   googleMapsApiKey: 'AIzaSyAK4SToF8JnwGlIIi28zar7_A0cUiZi8uo',
-  serverBaseUrl: 'https://beta.topchop.in/api/',
-  serverImageUrl: 'https://beta.topchop.in/storage/',
-  adminURL: 'https://beta.topchop.in/administration/',
+  serverBaseUrl: 'https://api.homeshef.in/api/',
+  serverImageUrl: 'https://api.homeshef.in/storage/',
+  adminURL: 'https://api.homeshef.in/administration/',
   basic:'123456',
   communityId : 1,
   authToken: '123456',

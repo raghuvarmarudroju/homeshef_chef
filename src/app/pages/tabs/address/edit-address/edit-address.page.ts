@@ -73,22 +73,17 @@ export class EditAddressPage implements OnInit {
           lng: data.lng
         };
         this.id = data.id;
-        this.formData(data);
+        this.form = new FormGroup({
+          floor: new FormControl(data.floor, {validators: [Validators.required]}),
+          house: new FormControl(data.house, {validators: [Validators.required]}),
+          block: new FormControl(data.block, {validators: [Validators.required]}),
+        });
+        this.isLoading = false;
         this.location = data;
       }
-      
     });
  
     
-  }
-
-  formData(data) {
-    this.form = new FormGroup({
-      floor: new FormControl(data.floor, {validators: [Validators.required]}),
-      house: new FormControl(data.house, {validators: [Validators.required]}),
-      block: new FormControl(data.block, {validators: [Validators.required]}),
-    });
-    this.isLoading = false;
   }
 
   fetchLocation(event) {
@@ -179,11 +174,5 @@ export class EditAddressPage implements OnInit {
     }
   }
 
-  ionViewDidLeave() {
-   console.log('ionViewDidLeave EditAddressPage');
-   if(this.from == 'home' && !this.check) {
-    this.addressService.changeAddress({});
-   }
-  }
 
 }

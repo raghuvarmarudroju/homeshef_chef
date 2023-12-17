@@ -1,11 +1,29 @@
-ion-icon {
-    align-self: start;
+ion-header {
+    background: transparent;
+    ion-toolbar {
+        --background: transparent;
+        --ion-color-base: transparent !important;
+        ion-buttons {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+        }
+    }
 }
 
-.ios {
-    ion-item-divider {
-        font-size: 0.8rem;
-        padding: 2vh;
-        background-color: var(--ion-color-light);
+.map {
+    height: 35vh;
+}
+
+ion-item {
+    align-items: center;
+    ion-button {
+        span {
+            color: var(--ion-color-primary);
+        }
+    }
+    ion-label {
+        span {
+            font-size: 0.8rem;
+        }
     }
 }

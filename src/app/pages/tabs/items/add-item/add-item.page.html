@@ -126,14 +126,14 @@
                     formControlName="expiresIn"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-select label="Ingredients" placeholder="Ingredients" formControlName="ingredients"
+                <ion-select label="Ingredients" placeholder="Ingredients" formArrayName="ingredients"
                     [multiple]="true" (ionChange)="handleIngredients($event)">
                     <ion-select-option *ngFor="let ing of ingredients" [value]="ing.id">
                         {{ing.name}}</ion-select-option>
                 </ion-select>
             </ion-item>
             <ion-item>
-                <ion-select label="Food Tags" placeholder="Food Tags" formControlName="tags" [multiple]="true"
+                <ion-select label="Food Tags" placeholder="Food Tags" formArrayName="tags" [multiple]="true"
                     (ionChange)="handleTags($event)">
                     <ion-select-option *ngFor="let ing of foodTags" [value]="ing.id"> {{ing.name}}</ion-select-option>
                 </ion-select>

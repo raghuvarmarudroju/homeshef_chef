@@ -7,7 +7,7 @@
       </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content fullscreen="true">
+<ion-content fullscreen="true" *ngIf="!isLoading">
       <ion-item-group class="ion-padding" *ngIf="cuisines?.length > 0 || chefCuisines?.length > 0">
           <ion-item-divider mode="md" color="light">
               <ion-label class="ion-no-margin" color="dark">Select the cuisines</ion-label>

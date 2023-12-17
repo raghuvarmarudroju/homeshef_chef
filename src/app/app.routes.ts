@@ -11,10 +11,10 @@ export const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./pages/tabs/tabs.routes').then((m) => m.routes),
-    // canMatch: [async() => await inject(AuthService).authGuard()],
-    // data: {
-    //   type: 'user'
-    // }
+    canMatch: [async() => await inject(AuthService).authGuard()],
+    data: {
+      type: 'user'
+    }
   },
   {
     path: 'menu', 

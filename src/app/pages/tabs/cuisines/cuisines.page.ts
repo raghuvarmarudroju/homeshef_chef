@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { CuisineService } from 'src/app/services/cuisine/cuisine.service';
@@ -33,6 +33,7 @@ export class CuisinesPage implements OnInit,OnDestroy{
 
   constructor(
     private global: GlobalService,
+    private navCtrl: NavController,
     private cuisineService: CuisineService,
     private httpService: HttpService,
     private router: Router) { }
@@ -55,19 +56,18 @@ export class CuisinesPage implements OnInit,OnDestroy{
         console.log('cuisines: ', cuisine);
         this.chefCuisines = cuisine;
         this.chefCuisines.forEach(element => {
+          this.selectedCuisines.push(element.cuisine_id);
           var index = this.cuisines.map(function (cuisine) { return cuisine.id; }).indexOf(element.cuisine_id);
           console.log(index);
           this.cuisines[index].selected = true;
-        });  
+        }); 
       }
     });
     this.getcuisines();
   }
 
   ionViewDidEnter() {
-    this.chefCuisines.forEach(element => {
-      this.selectedCuisines.push(element.cuisine_id);
-    });
+    
     console.log('ionViewDidEnter cuisinePage');
     this.global.customStatusbar();
   }
@@ -75,19 +75,17 @@ export class CuisinesPage implements OnInit,OnDestroy{
   async getcuisines() {    
     try {
       this.isLoading = true;
-      // this.global.showLoader();
+      this.global.showLoader();
       const cuisines = await this.cuisineService.getCuisines();
       console.log('cuisines list: ', cuisines);
       const chefCuisines = await this.cuisineService.getChefCuisines();
       console.log('cuisines list: ', chefCuisines);
-  
-      
       this.isLoading = false;
-      // this.global.hideLoader();
+      this.global.hideLoader();
     } catch(e) {
       console.log(e);
       this.isLoading = false;
-      // this.global.hideLoader();
+      this.global.hideLoader();
       this.global.errorToast();
     }
   }
@@ -119,9 +117,9 @@ export class CuisinesPage implements OnInit,OnDestroy{
     }
     else {
       var index = this.selectedCuisines.indexOf(e.detail.value);
-      this.selectedCuisines = this.selectedCuisines.slice(index,1);
+      this.selectedCuisines.splice(index,1);
     }
-    //this.selectedCuisines = this.removeDuplicates(this.selectedCuisines);
+    this.selectedCuisines = this.removeDuplicates(this.selectedCuisines);
     console.log(this.selectedCuisines);
   }
  removeDuplicates(arr) {
@@ -137,9 +135,10 @@ export class CuisinesPage implements OnInit,OnDestroy{
         cuisines : JSON.stringify(this.selectedCuisines)
       }
       this.httpService.post("chef/cuisines/update", params).subscribe((item: any) => {
-        if(item.datastatus == 200){
+        if(item.status == 200){
           this.global.successToast('Cuisines updated!');
           this.toggleSubmit();
+          this.navCtrl.back();
         }else{
           this.global.errorToast('Something went wrong!');
         }
