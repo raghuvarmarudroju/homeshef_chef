@@ -1,6 +1,6 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, IonicSlides } from '@ionic/angular';
+import { IonContent, IonicModule, IonicSlides } from '@ionic/angular';
 import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { Address } from 'src/app/models/address.model';
 import { Subscription } from 'rxjs';
@@ -39,7 +39,7 @@ import { OrderComponent } from 'src/app/components/order/order.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit, OnDestroy {
-
+  @ViewChild(IonContent, {static: false}) content: IonContent;
   swiperModules = [IonicSlides];
   banners: Banner[] = [];
   chefs: Chef[] = [];
@@ -80,7 +80,13 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    
+    var selectedTab = localStorage.getItem('selectedTabId');
+    if (selectedTab && selectedTab != null && selectedTab !== 'null') {
+      console.log(selectedTab);
+      this.selectedTabId = parseInt(selectedTab);
+    }else{
+      this.selectedTabId = 1;
+    }
     this.global.customStatusbar();
     this.profileSub = this.profileService.profile.subscribe({
       next: profile => {

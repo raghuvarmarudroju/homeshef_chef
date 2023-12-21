@@ -17,7 +17,7 @@
   <ng-container>
     <ion-row class="borderBottom">
       <div class="category-slide">
-        <ion-segment class="segment-small" scrollable [(ngModel)]="selectedTabId">
+        <ion-segment class="segment-small" scrollable [value]="selectedTabId">
           <ion-segment-button *ngFor="let category of categories" [value]="category.id"
             (click)="selectTab(category.id)">
             <p>{{category?.name}}</p>

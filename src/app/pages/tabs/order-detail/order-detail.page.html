@@ -10,24 +10,20 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content color="light">
-
   <ion-item class="delivery_details" lines="full" *ngIf="(order?.status == 4)">
     <ion-label>
-       {{order?.status == 4 ? 'On the Way to ' + order?.user?.name : 'Out for delivery'}}
+      {{order?.status == 4 ? 'On the Way to ' + order?.user?.name : 'Out for delivery'}}
     </ion-label>
     <ion-text slot="start" class="ion-text-wrap time" *ngIf="(order?.status == 4)">
       <ion-icon name="bicycle"></ion-icon>
     </ion-text>
   </ion-item>
-
   <ion-item class="delivery_details" lines="full" *ngIf="order?.status == 0">
     <ion-label class="ion-text-wrap ion-text-center" color="tertiary">
       Waiting for confirmation from {{order?.chef?.name}}
     </ion-label>
   </ion-item>
-
   <ion-list class="location">
     <ion-item class="chef" lines="full">
       <div slot="start">
@@ -35,7 +31,6 @@
         <div class="connectingLine"></div>
         <div class="circle2"></div>
       </div>
-
       <ion-label>
         <ion-text class="sss">
           <ion-text color="dark">{{order?.chef?.name}}</ion-text>
@@ -49,11 +44,9 @@
         </ion-text>
       </ion-label>
     </ion-item>
-
     <ion-item-divider *ngIf="order?.rider" mode="md" color="light">
       <ion-label>Delivery details</ion-label>
     </ion-item-divider>
-
     <ion-item lines="none" *ngIf="order?.rider" class="rider">
       <ion-avatar slot="start" *ngIf="order?.rider">
         <img [src]="order?.rider?.photo ? order?.rider?.photo : 'assets/imgs/avatar.png'" />
@@ -67,19 +60,16 @@
           <ion-text>({{order?.rating?.comment_rider}})</ion-text>
         </p>
       </ion-label>
-
-      <ion-fab-button *ngIf="order?.rider && (order?.status == 4 || order?.status == 8)" size="small" slot="end" color="success" class="fab_call" (click)="call(order?.rider?.phone)">
+      <ion-fab-button *ngIf="order?.rider && (order?.status == 4 || order?.status == 8)" size="small" slot="end"
+        color="success" class="fab_call" (click)="call(order?.rider?.phone)">
         <ion-icon name="call-outline"></ion-icon>
       </ion-fab-button>
-
       <div slot="end" *ngIf="order?.status == 5 && order?.rating">
         <app-rating [readonly]="true" [initialRating]="order?.rating?.rate_rider" [size]="'0.7rem'" [padding]="'0 1px'">
         </app-rating>
       </div>
-
     </ion-item>
   </ion-list>
-
   <ion-list-header>
     <ion-label color="tertiary">Bill Details</ion-label>
   </ion-list-header>
@@ -161,15 +151,13 @@
         Processing
       </ion-button>
     </ion-col>
-    <ion-col *ngIf="order?.status == 2" size="6" class="ion-no-padding ion-text-center"
-      (click)="changeStatus(4)">
+    <ion-col *ngIf="order?.status == 2" size="6" class="ion-no-padding ion-text-center" (click)="changeStatus(4)">
       <ion-button expand="block" color="success">
         <ion-icon slot="start" name="restaurant"></ion-icon>
         Out for Delivery
       </ion-button>
     </ion-col>
-    <ion-col *ngIf="order?.status == 4" size="6" class="ion-no-padding ion-text-center"
-      (click)="changeStatus(5)">
+    <ion-col *ngIf="order?.status == 4" size="6" class="ion-no-padding ion-text-center" (click)="changeStatus(5)">
       <ion-button expand="block" color="success">
         <ion-icon slot="start" name="restaurant"></ion-icon>
         Delivered

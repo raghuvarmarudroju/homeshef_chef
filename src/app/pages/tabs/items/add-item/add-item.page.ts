@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { forkJoin, map } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-item',
@@ -215,6 +216,7 @@ export class AddItemPage implements OnInit {
     if(event != 0){
       let selectedValue = event.detail.value;
       this.wpflMarginValue = (this.wpflMarginPercent/100)*selectedValue;
+      console.log(this.wpflMarginValue);
       this.chefEarnings = selectedValue - this.wpflMarginValue;
       this.gstValue = (this.gstPercent/100) * this.wpflMarginValue;
       this.chefEarnings = this.chefEarnings - this.gstValue;
@@ -255,35 +257,35 @@ export class AddItemPage implements OnInit {
   async editPicture() {
     // take picture
     try {
-      this.global.showLoader();
+      //this.global.showLoader();
       const imageData = await this.global.takePicture();
       if(imageData) {
         const pic = 'data:image/png;base64,' + imageData.base64String;
         this.form.controls['image'].patchValue(pic);
         this.itemImage = pic;
       }
-      this.global.hideLoader();
+      //this.global.hideLoader();
     } catch(e) {
       console.log(e);
-      this.global.hideLoader();
+      //this.global.hideLoader();
     }
   }
   async onSubmit() {
     try {
       this.toggleSubmit();
       console.log(this.form.value);
-      // if(!this.form.valid) {
-      //   this.global.errorToast('Please fill all fields');
-      //   this.toggleSubmit();
-      //   return;
-      // }
-      this.form.value.startDate = formatDate(this.form.get('startDate')?.value, 'yyyy-MM-dd', 'en');
-      this.form.value.endDate = formatDate(this.form.get('endDate')?.value, 'yyyy-MM-dd', 'en');
+      if(!this.form.valid) {
+        this.global.errorToast('Please fill all fields');
+        this.toggleSubmit();
+        return;
+      }
+      this.form.value.startDate = moment(new Date(this.form.get('startDate')?.value)).format('YYYY-MM-DD');
+      this.form.value.endDate = moment(new Date(this.form.get('endDate')?.value)).format('YYYY-MM-DD');
       this.form.value.chefearnings = this.chefEarnings;
-      this.form.value.wpflMarginPercent = this.wpflMarginPercent;
-      this.form.value.wpflMarginValue = this.wpflMarginValue;
-      this.form.value.gstPercent = this.gstPercent;
-      this.form.value.gstValue = this.gstValue;
+      this.form.value.wpflMarginPercent = this.homeshef_commission;
+      this.form.value.wpflMarginValue = this.commission;
+      this.form.value.gstPercent = this.homeshef_commission_gst;
+      this.form.value.gstValue = this.commission_gst;
       this.form.value.tdsPercent = this.tdsPercent;
       this.form.value.tdsValue = this.tdsValue;
       console.log(this.form.value);
@@ -295,7 +297,8 @@ export class AddItemPage implements OnInit {
         this.global.errorToast('Please upload the item image!');
       }else {
         this.httpService.post("product/add", params).subscribe((item: any) => {
-          if(item.status == 200){
+          console.log(item);
+          if(item.data.status == 200){
             this.check = true;
             this.navCtrl.back();
             this.toggleSubmit();
