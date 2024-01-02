@@ -14,15 +14,16 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { forkJoin, map } from 'rxjs';
 import * as moment from 'moment';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-add-item',
-  templateUrl: './add-item.page.html',
-  styleUrls: ['./add-item.page.scss'],
+  selector: 'app-edit-item',
+  templateUrl: './edit-item.page.html',
+  styleUrls: ['./edit-item.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule,FormsModule, ReactiveFormsModule, MapComponent]
 })
-export class AddItemPage implements OnInit {
+export class EditItemPage implements OnInit {
 
   form: FormGroup;
   isSubmitted = false;
@@ -61,7 +62,7 @@ export class AddItemPage implements OnInit {
   maxDate = new Date();
   start_date: any;
   end_date: any;
-  itemImage : any ='assets/imgs/noimage.png';
+  itemImage : any = null;
   public dates: any = {
     startDate: new Date(Date.now()),
     endDate: new Date(Date.now())
@@ -86,6 +87,7 @@ export class AddItemPage implements OnInit {
   commission: any;
   commission_gst: number;
   total_commission: any;
+  item: any = null;
 
   constructor(
     private navCtrl: NavController,
@@ -101,15 +103,39 @@ export class AddItemPage implements OnInit {
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.checkForUpdate();
+    this.global.customStatusbar();
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log('check id: ', id);
+    if(!id) {
+      this.navCtrl.back();
+      return;
+    }
+    this.id = id;
+    console.log('edit id: ', this.id);
+    this.formData();
+    
+    this.getItem();
   }
-
+  async getItem() {
+    try {
+      this.httpService.get("product/"+this.id).subscribe((item: any) => {
+        this.item = item.data.results;
+        this.itemImage = environment.serverImageUrl+this.item.primary_image;
+        this.initForm();
+        this.checkForUpdate();
+      });
+      this.isLoading = false;
+    } catch (e) {
+      console.log(e);
+      this.isLoading = false;
+      this.global.errorToast();
+    }
+  }
   async checkForUpdate() {
     this.isLoading = true;
-    this.observePrice(0);
-    this.initForm();
+    this.updatePrice(this.item.mrp);
+    this.formData();
   }
-
   initForm() {
     forkJoin({
       foodTags: this.menuService.getFoodTags(),
@@ -141,31 +167,31 @@ export class AddItemPage implements OnInit {
   }
   async formData() {
     this.form = new FormGroup({
-      chef_id: new FormControl(await this.authService.getId(), {validators: [Validators.required]}),
-      name: new FormControl('', {validators: [Validators.required]}),
-      description: new FormControl('', {validators: [Validators.required]}),
-      availability: new FormControl(0),
+      chef_id: new FormControl(this.item?.chef_id, {validators: [Validators.required]}),
+      name: new FormControl(this.item?.name, {validators: [Validators.required]}),
+      description: new FormControl(this.item?.description, {validators: [Validators.required]}),
+      availability: new FormControl(this.item?.availability_flag),
       dayNames: this.formBuilder.array([new FormControl('sun'),new FormControl('mon'),new FormControl('tue'),new FormControl('wed'),new FormControl('thu'),new FormControl('fri'),new FormControl('sat')]),
       startDate: new FormControl(this.dates.startDate),
       endDate: new FormControl(this.dates.endDate),
-      perDayItemCookedCount: new FormControl(0, {validators: [Validators.required]}),
-      price: new FormControl(0, {validators: [Validators.required]}),
-      types: new FormControl(null, {validators: [Validators.required]}),
-      unit: new FormControl('', {validators: [Validators.required]}),
-      size: new FormControl(0, {validators: [Validators.required]}),
-      expiresIn: new FormControl(0, {validators: [Validators.required]}),
+      perDayItemCookedCount: new FormControl(this.item?.stock, {validators: [Validators.required]}),
+      price: new FormControl(this.item?.mrp, {validators: [Validators.required]}),
+      types: new FormControl(this.item?.food_type_id, {validators: [Validators.required]}),
+      unit: new FormControl(this.item?.unit_id, {validators: [Validators.required]}),
+      size: new FormControl(this.item?.portion_size, {validators: [Validators.required]}),
+      expiresIn: new FormControl(this.item?.expires_in, {validators: [Validators.required]}),
       ingredients: this.formBuilder.array([]),
-      spiceLevel: new FormControl('Not Spicy', {validators: [Validators.required]}),
-      reheatingInstructions: new FormControl('', {validators: [Validators.required]}),
+      spiceLevel: new FormControl(this.item?.spice_level, {validators: [Validators.required]}),
+      reheatingInstructions: new FormControl(this.item?.reheating_instructions, {validators: [Validators.required]}),
       tags: this.formBuilder.array([]),
-      comment: new FormControl('', {validators: [Validators.required]}),
-      chefearnings: new FormControl(0),
-      wpflMarginPercent : new FormControl(0),
-      wpflMarginValue : new FormControl(0),
-      gstPercent : new FormControl(0),
-      gstValue : new FormControl(0),
-      tdsPercent : new FormControl(0),
-      tdsValue : new FormControl(0),
+      comment: new FormControl(this.item?.comments, {validators: [Validators.required]}),
+      chefearnings: new FormControl(this.item?.chef_earnings),
+      wpflMarginPercent : new FormControl(this.item?.wpfl_margin_percent),
+      wpflMarginValue : new FormControl(this.item?.wpfl_margin_value),
+      gstPercent : new FormControl(this.item?.gst_margin_percent),
+      gstValue : new FormControl(this.item?.gst_margin_value),
+      tdsPercent : new FormControl(this.item?.tds_govt_percent),
+      tdsValue : new FormControl(this.item?.tds_govt_value),
       image: new FormControl(null)
     });
     this.isLoading = false;
@@ -194,6 +220,23 @@ export class AddItemPage implements OnInit {
   nameChanged(arg) {
     console.log(this.start_date);
   } 
+  public updatePrice(mrp : any) {
+    if(mrp != 0){
+      let selectedValue = mrp;
+      this.basePrice = selectedValue - (this.gstPercent/100)*100;
+      console.log(this.basePrice);
+      this.commission = (this.homeshef_commission/100)*this.basePrice;
+      console.log(this.commission);
+      this.commission_gst =  (this.homeshef_commission_gst/100) * this.commission;
+      console.log(this.commission_gst);
+      this.tdsValue =  (this.tds/100) * this.basePrice;
+      console.log(this.tdsValue);
+      this.total_commission =  this.commission + this.commission_gst;
+      console.log(this.total_commission);
+      this.chefEarnings =  selectedValue - this.total_commission - this.tdsValue;
+      console.log(this.chefEarnings);
+    }  
+  }
   public observePrice(event : any) {
     if(event != 0){
       let selectedValue = event.detail.value;
@@ -209,8 +252,6 @@ export class AddItemPage implements OnInit {
       console.log(this.total_commission);
       this.chefEarnings =  selectedValue - this.total_commission - this.tdsValue;
       console.log(this.chefEarnings);
-
-
     }  
   }
   public observePrices(event : any) {
@@ -294,10 +335,10 @@ export class AddItemPage implements OnInit {
         data : JSON.stringify(this.form.value)
       }
       console.log(params);
-      if(!this.form.value.image) {
+      if(!this.form.value.image && this.itemImage == null) {
         this.global.errorToast('Please upload the item image!');
       }else {
-        this.httpService.post("product/add", params).subscribe((item: any) => {
+        this.httpService.put("product/"+this.id, params).subscribe((item: any) => {
           console.log(item);
           if(item.data.status == 200){
             this.check = true;

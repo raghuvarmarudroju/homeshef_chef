@@ -44,12 +44,13 @@
     "capacitor-call-number": "^1.0.3",
     "capacitor-native-settings": "^5.0.0",
     "cordova-browser": "7.0.0",
-    "cordova-ios": "6.3.0",
+    "cordova-ios": "7.0.1",
     "cordova-plugin-request-location-accuracy": "^2.3.0",
     "cordova-res": "^0.15.4",
     "ionicons": "^7.0.0",
     "moment": "^2.29.4",
     "ng-otp-input": "^1.9.2",
+    "onesignal-cordova-plugin": "5.0.4",
     "rxjs": "~7.8.0",
     "stripe-pwa-elements": "^2.1.0",
     "swiper": "^10.0.4",
@@ -102,6 +103,7 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
+      "onesignal-cordova-plugin": {},
       "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [

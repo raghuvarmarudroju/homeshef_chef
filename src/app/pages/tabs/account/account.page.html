@@ -19,13 +19,8 @@
     <ion-list class="borderBottom">
 
       <ion-item lines="full" class="profile" *ngIf="profile">
-        <ion-avatar slot="start" (click)="editPicture()">
+        <ion-avatar slot="start">
           <img [src]="profile?.photo ? profile.photo : ('assets/imgs/avatar.png')" />
-          <ion-fab vertical="bottom" horizontal="right">
-            <ion-fab-button color="white">
-              <ion-icon name="create-outline"></ion-icon>
-            </ion-fab-button>
-          </ion-fab>
         </ion-avatar>
         <ion-label>
           <ion-text class="ion-text-uppercase"><h4>{{profile?.name | uppercase}}</h4></ion-text>
@@ -72,7 +67,7 @@
         <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
         <h4>Address</h4>
       </ion-item>
-      <ion-item lines="none" detail="true">
+      <ion-item lines="none" detail="true" [routerLink]="['/', 'tabs', 'delivery-options']">
         <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
         <h4>Delivery,Takeaway</h4>
       </ion-item>

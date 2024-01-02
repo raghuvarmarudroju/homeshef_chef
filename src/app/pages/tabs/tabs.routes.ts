@@ -38,11 +38,29 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'menu/edit/:id',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./items/edit-item/edit-item.page').then( m => m.EditItemPage),
+          }
+        ]
+      },
+      {
         path: 'cuisines',
         children: [
           {
             path: '',
             loadComponent: () => import('./cuisines/cuisines.page').then( m => m.CuisinesPage)
+          },
+        ]
+      },
+      {
+        path: 'delivery-options',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./delivery-options/delivery-options.page').then( m => m.DeliveryOptionsPage)
           },
         ]
       },
@@ -183,5 +201,17 @@ export const routes: Routes = [
   {
     path: 'reviews',
     loadComponent: () => import('./reviews/reviews.page').then( m => m.ReviewsPage)
+  },
+  {
+    path: 'delivery-options',
+    loadComponent: () => import('./delivery-options/delivery-options.page').then( m => m.DeliveryOptionsPage)
+  },
+  {
+    path: 'item-detail',
+    loadComponent: () => import('./items/item-detail/item-detail.page').then( m => m.ItemDetailPage)
+  },
+  {
+    path: 'edit-item',
+    loadComponent: () => import('./items/edit-item/edit-item.page').then( m => m.EditItemPage)
   },
 ];

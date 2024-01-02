@@ -112,6 +112,7 @@ export class AuthService {
         )
       )
   }
+  
   public update(data : any){
 
     return this.http.post(environment.adminURL + 'users/update',data)

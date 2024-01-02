@@ -1,0 +1,47 @@
+<ion-header slot="fixed" class="ion-no-border">
+
+  <ion-toolbar>
+      <ion-title><ion-label color="dark">Update Delivery Options</ion-label></ion-title>
+      <ion-buttons slot="start" mode="md">
+          <ion-back-button defaultHref="/tabs/account" color="dark"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true" *ngIf="!isLoading">
+  <ion-radio-group [(ngModel)]="delivery_type" [value]="delivery_type">
+    <ion-item-group class="dashedLightBorderTop">
+      <ion-item >
+        <ion-label>
+          Delivery
+        </ion-label>
+        <ion-radio aria-label="Delivery" value="1" slot="end" color="success"></ion-radio>
+      </ion-item>
+
+    </ion-item-group>
+    <ion-item-group class="dashedLightBorderTop">
+      <ion-item>
+        <ion-label>
+          Pick Up
+        </ion-label>
+        <ion-radio aria-label="Pickup" value="2" slot="end" color="success"></ion-radio>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group class="dashedLightBorderTop">
+      <ion-item>
+        <ion-label>
+          Delivery & Pickup
+        </ion-label>
+        <ion-radio aria-label="Both" value="3" slot="end" color="success"></ion-radio>
+      </ion-item>
+    </ion-item-group>
+  </ion-radio-group>
+</ion-content>
+<ion-footer>
+  <div class="ion-padding-horizontal ion-padding-top">
+    <ion-button *ngIf="!isSubmitted" expand="block" type="submit" color="primary" (click)="onSubmit()">SAVE & PROCEED
+    </ion-button>
+    <ion-button *ngIf="isSubmitted" expand="block" color="primary">
+        <ion-spinner name="crescent"></ion-spinner>
+    </ion-button>
+</div>
+</ion-footer>

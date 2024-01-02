@@ -70,6 +70,7 @@ export class AccountPage implements OnInit, OnDestroy {
   ionViewDidEnter() {
     console.log('ionViewDidEnter AccountPage');
     this.global.customStatusbar(true);
+    this.getData();
   }
 
   async getData() {

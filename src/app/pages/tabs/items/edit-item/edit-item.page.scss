@@ -1,0 +1,24 @@
+ion-item-divider{
+    padding: 5px !important;
+}
+ion-item.profile {
+    margin-top: 5px;
+    .item-inner{
+        padding-right: 0px !important;
+    }
+    ion-img {
+        ion-fab {
+            width: 15px;
+            height: 15px;
+            margin-left: -15px;
+            ion-fab-button {
+                width: 15px;
+                height: 15px;
+                --background: transparent;
+                ion-icon {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+}

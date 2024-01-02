@@ -119,7 +119,7 @@ export class ItemsPage implements OnInit, OnDestroy {
     }
   }
   async ionViewWillEnter() {
-
+    await this.getItems();
   }
 
   async ngOnInit() {
@@ -179,6 +179,9 @@ export class ItemsPage implements OnInit, OnDestroy {
   }
   addItem(){
     this.global.navigateByUrl('/tabs/menu/add', false);
+  }
+  editItem(id){
+    this.global.navigate(['/', 'tabs', 'menu', 'edit',id]);
   }
   checkItemCategory(id) {
     const item = this.items.find((x) => x.food_type_id == id);

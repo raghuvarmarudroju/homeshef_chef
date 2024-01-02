@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/interfaces/item.interface';
 import { CartService } from 'src/app/services/cart/cart.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
 
@@ -32,7 +33,7 @@ export class ItemComponent implements OnInit {
   selectedDate: Date;
   cartItems: any;
   days = ['sun','mon','tue','wed','thu','fri','sat'];
-  constructor(private cartService: CartService,public datepipe: DatePipe,private httpService: HttpService) {
+  constructor(private cartService: CartService,public datepipe: DatePipe,private httpService: HttpService,private global: GlobalService) {
     this.serverImageUrl = environment.serverImageUrl;
     var selectedDate = localStorage.getItem('selectedDate');
     if (selectedDate && selectedDate != null && selectedDate !== 'null') {
@@ -55,6 +56,9 @@ export class ItemComponent implements OnInit {
     this.item.delivery_date = this.selectedDate;
     this.add.emit(this.item);
     
+  }
+  editItem() {
+    this.global.navigate(['/', 'tabs', 'menu','edit', this.item.id]);
   }
   quantityPlus() {
     this.item.delivery_date = this.selectedDate;

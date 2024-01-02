@@ -1,0 +1,23 @@
+ion-radio.ios::part(container) {
+    width: 3vh;
+    height: 3vh;
+  
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.radio-checked.ios::part(container) {
+    background-color: var(--ion-color-success);
+    border-color: var(--ion-color-success);
+}
+
+ion-radio.radio-checked.ios::part(mark) {
+    width: 0.7vh;
+    height: 1.2vh;
+  
+    border-width: 0px 2px 2px 0px;
+    border-style: solid;
+    border-color: var(--ion-color-white);
+  
+    transform: rotate(45deg);
+}

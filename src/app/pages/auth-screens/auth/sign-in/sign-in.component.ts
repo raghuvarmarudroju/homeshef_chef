@@ -72,11 +72,31 @@ export class SignInComponent implements OnInit {
     this.isLogin = true;
     this.authService.login(this.form.value.email, this.form.value.password).subscribe(auth=>{ 
       if (auth && auth.status == 200 ) {
-        this.authService.setUserData(auth.data?.id);
-        this.navigate(auth.data);
-        this.isLogin = false;
-        this.form.reset();
-        console.log(auth);
+        if (auth.data.is_verified == 1) {
+          console.log(window['plugins'].OneSignal.User.pushSubscription);
+          if(auth.data.onesignal_id==null || auth.data.onesignal_id != window['plugins'].OneSignal.User.pushSubscription.id){
+            const param = {
+              id : auth.data.id,
+              onesignal_id : window['plugins'].OneSignal.User.pushSubscription.id
+            }
+            this.authService.update(param).subscribe((userData: any) => { 
+              this.authService.setUserData(auth.data?.id);
+              this.navigate(auth.data);
+              this.isLogin = false;
+              this.form.reset();
+              console.log(auth);
+            });
+          }else{
+            this.authService.setUserData(auth.data?.id);
+              this.navigate(auth.data);
+              this.isLogin = false;
+              this.form.reset();
+              console.log(auth);
+          }
+        } else {
+          this.global.hideLoader();
+          this.global.errorToast('Your are not verified.Please contact administrator');
+        }
       }else{
         this.isLogin = false;
         this.global.showAlert('You are not an Authorized User! Please try again with proper credentials.');

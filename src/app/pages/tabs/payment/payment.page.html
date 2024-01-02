@@ -7,8 +7,28 @@
   </ion-toolbar>
 </ion-header>
 <ion-content color="light">
-  <div class="wrapper">
-    <h1>coming soon<span class="dot">.</span></h1>
-   </div>
-
+  <ion-card *ngFor="let payment of payments">
+    <ion-item lines="none" class="dashedBorderBottom" >
+      <ion-label class="first">
+        {{payment?.withdrawl_id}}
+        <h4>Date : <span>{{payment?.orders_date | date: 'MMM d, y'}}</span></h4>
+        <h4>No of orders : <span>{{payment?.orders_count}}</span></h4>
+        
+      </ion-label>
+      <ion-label class="second">
+        <ion-note slot="end" color="dark" class="statusText">
+          <span *ngIf="payment?.status == 1">Completed<ion-icon  name="checkbox" color="success"></ion-icon></span>
+          <span *ngIf="payment?.status == 2">Declined<ion-icon  name="close-circle" color="danger"></ion-icon></span>
+          <span *ngIf="payment?.status == 0">Pending<ion-icon  name="alert-circle" color="warning"></ion-icon></span>
+        </ion-note>
+        <ion-text>
+          <p class="amt">
+            <b>
+              ₹{{payment?.orders_total}}
+            </b>
+          </p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-card>
 </ion-content>

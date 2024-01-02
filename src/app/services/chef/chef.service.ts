@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { Chef } from 'src/app/interfaces/chef.interface';
+import { BehaviorSubject, map } from 'rxjs';
+import { HttpService } from '../http/http.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChefService {
+  uid: any;
+  private _payments = new BehaviorSubject<any>(null);
 
-  constructor(private api: ApiService) { } 
-
+  get payments() {
+    return this._payments.asObservable();
+  }
+  constructor( private auth: AuthService,private api: ApiService,private http: HttpService) { } 
+  async getUid() {
+    if(!this.uid) {
+      this.uid = await this.auth.getId();
+    }
+    return this.uid;
+  }
   async getChefs() {
     try {
       await this.api.delayedResponse(1000); //remove when working with real apis
@@ -18,7 +31,35 @@ export class ChefService {
       throw(e);
     }
   }
-
+  async getPayments() {
+    try {
+      //await this.apiService.delayedResponse(500); //remove when working with real apis
+      await this.getUid();
+      let data = null;
+      if(this.uid) {
+        const param = {
+          chef: this.uid,
+          date : null,
+          role : 3,
+          community : null,
+          status : status
+        };
+        this.http.post('withdrawls', param).subscribe((payments: any) => { 
+          console.log(payments);
+          data = payments.data.withdrawls;
+          this._payments.next(payments.data.withdrawls); 
+        });
+        
+      }
+      return data;
+    } catch(e) {
+      throw(e);
+    }
+  }
+  reset() {
+    this.uid = null;
+    this._payments.next(null);
+  }
   async getChefById(id) {
     try {
       await this.api.delayedResponse(1000); //remove when working with real apis

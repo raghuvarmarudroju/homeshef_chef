@@ -112,7 +112,12 @@ export class HomePage implements OnInit, OnDestroy {
     }
     
   }
-
+  refresh(event){
+    setTimeout(() => {
+      this.getData();
+      event.target.complete();
+    }, 2000);
+  }
   async getData() {
     try {
       this.chefs = [];

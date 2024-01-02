@@ -14,8 +14,8 @@
       </ion-label>
     </ion-item>
   </ion-toolbar>
-  <ng-container>
-    <ion-row class="borderBottom">
+  <ng-container >
+    <ion-row class="borderBottom" color="white">
       <div class="category-slide">
         <ion-segment class="segment-small" scrollable [value]="selectedTabId">
           <ion-segment-button *ngFor="let category of categories" [value]="category.id"
@@ -29,6 +29,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
   <div class="wrapper" *ngIf="!isVerified && !isLoading">
     <h1>Verification Pending</h1>
    </div>
