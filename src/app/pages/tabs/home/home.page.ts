@@ -48,6 +48,7 @@ export class HomePage implements OnInit, OnDestroy {
   addressSub: Subscription;
   profile : any;
   profileSub: Subscription;
+  orderSub: Subscription;
   communityData: any;
   categories: any;
   orders: any;
@@ -97,13 +98,19 @@ export class HomePage implements OnInit, OnDestroy {
             this.isVerified = true;
           }
           this.communityData = profile?.community;
-          this.orders = profile?.orders;
           this.selectTab(this.selectedTabId);
-          
           this.isLoading = false;
-          console.log(this.orders);
         }
         
+      }
+    });
+    this.orderSub = this.orderService.orders.subscribe({
+      next: orders => {
+        console.log(orders);
+        if(orders){
+          this.orders = orders;
+          this.selectTab(this.selectedTabId);
+        }
       }
     });
     this.getData();
@@ -122,6 +129,7 @@ export class HomePage implements OnInit, OnDestroy {
     try {
       this.chefs = [];
       await this.addressService.checkExistAddress(this.location);
+      await this.orderService.getOrders();
       await this.profileService.getProfile();
       this.categories = await this.categoryService.getOrderCategories();
       
@@ -149,13 +157,13 @@ export class HomePage implements OnInit, OnDestroy {
   public selectTab(id:any){
     this.selectedTabId = id;
     localStorage.setItem('selectedTabId',id);
+    this.filteredOrders=[];
     if(id == 1){
-
       this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date).toLocaleDateString() == new Date().toLocaleDateString());
     }else if(id == 2){
-      this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date) > new Date());
+      this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date).toLocaleDateString() > new Date().toLocaleDateString());
     }else{
-      this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date) < new Date());
+      this.filteredOrders =  this.orders.filter((item: any) => new Date(item.delivery_date).toLocaleDateString() < new Date().toLocaleDateString());
     }
     //this.getMenuItems();
     //this.sidenav.close();
@@ -208,6 +216,8 @@ export class HomePage implements OnInit, OnDestroy {
     console.log('ngondestroy homepage');
     if(this.addressSub) this.addressSub.unsubscribe();
     this.addressService.reset();
+    if(this.orderSub) this.orderSub.unsubscribe();
+    this.orderService.reset();
   }
 
 }

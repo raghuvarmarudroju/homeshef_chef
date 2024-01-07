@@ -3,20 +3,76 @@ ion-input, ion-text {
 }
 
 ion-card {
-    margin: 2vh;
-    padding: 2vh;
+    position: absolute;
+    width: 90%;
+    bottom: 12%;
     border-radius: 20px;
 }
 
 div.submit_button {
     ion-button {
-        margin: 5vh 0 0 0;
+        margin: 10px;
     }
 }
 div.guest {
     position: absolute;
-    bottom: 0;
+    bottom: 2%;
     transform: translate(-50%, -50%);
     left: 50%;
-    margin-bottom: 5vh;
+}
+ion-input{
+    margin-top: 10px;
+    border: solid 1px #dadadd;
+    .input-bottom{
+        border-top: none !important;
+    }
+    
+    
+ }
+ .no-validation-line .item-inner {
+    box-shadow: none !important;
+  }
+ ion-input .input-bottom{
+    border-bottom-color: transparent;
+ }
+ ion-input .input-bottom{
+    border-bottom-color: transparent;
+ }
+ ion-item {
+    --highlight-height: 0;
+}
+ .input-bottom.sc-ion-input-ios{
+    border-top: none !important;
+ }
+ion-item.check{
+    border: none !important;
+}
+.ss{
+    width: 15% !important;
+}
+.terms{
+   font-size: 12px; 
+}
+ion-card {
+    margin: 2vh;
+    padding: 2vh;
+    border-radius: 20px;
+}
+
+ion-button {
+    margin: 5vh 0 0 0;
+}
+
+
+ion-checkbox {
+    --size: 20px;
+    --background-checked: #de0f17;
+  }
+  
+ion-checkbox::part(container) {
+    border-radius: 6px;
+    border: 2px solid #de0f17;
+}
+.ss .item-native{
+    padding-left: 0px !important;
 }

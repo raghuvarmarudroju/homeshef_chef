@@ -37,12 +37,9 @@ export class EditProfileComponent implements OnInit {
       }
       console.log(form.value);
       this.isSubmitted = true;
-      if(this.profile.email != form.value.email) {
-        this.presentPasswordPrompt(form.value);
-      } else {
         await this.profileService.updateProfile(this.profile, form.value);
+        this.global.successToast('Profile updated');
         this.global.modalDismiss();
-      }
       this.isSubmitted = false;
     } catch(e) {
       console.log(e);

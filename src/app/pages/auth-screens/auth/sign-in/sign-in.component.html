@@ -2,38 +2,29 @@
 
   <form [formGroup]="form"> 
   
-    <ion-item lines="none" class="ion-margin-bottom">
-      <ion-input 
+    <ion-item lines="none" class="i">
+      <ion-input class="no-validation-line"
         label=""
-        placeholder="Email address"
-        formControlName="email" 
-        type="email"
-        errorText="* Please enter your Email Address">
+        placeholder="Mobile Number"
+        formControlName="phone" 
+        inputmode="numeric"
+        type="number"
+        minlength="10"
+        errorText="* Please enter your Mobile Number">
       </ion-input>
     </ion-item>
-  
-    <ion-item lines="none">
-      <ion-icon 
-        [name]="type ? 'eye' : 'eye-off'" 
-        slot="end" 
-        color="dark" 
-        (click)="changeType()">
-      </ion-icon>
-      <ion-input 
-        label=""
-        formControlName="password" 
-        [type]="type ? 'password' : 'text'" 
-        placeholder="Enter password"
-        minlength="3"
-        [errorText]="form.get('password').hasError('minlength') ? '* Password must be atleast 8 characters long' : '* Please enter your password'">
-      </ion-input>
+    <ion-item class="check">
+      <ion-item class="check ss" >
+        <ion-checkbox slot="start" formControlName="terms" (ionChange)="onTermsChecked($event)" errorText="* Please accept Terms & Conditions"></ion-checkbox>
+      </ion-item>
+      
+      <ion-label class="terms" (click)="terms()">Accept Terms & Conditions</ion-label>
     </ion-item>
-  
   </form>
   
-  <p class="ion-text-right ion-margin-horizontal">
+  <!-- <p class="ion-text-right ion-margin-horizontal">
     <ion-text color="medium" (click)="forgotPassword()">Forgot password?</ion-text>
-  </p>
+  </p> -->
   
   <div class="submit_button ion-margin-horizontal">
     <ion-button
@@ -45,7 +36,7 @@
       color="primary"
       [strong]="true"
       (click)="onSubmit()">
-      <ion-text>Log In</ion-text>
+      <ion-text>Get OTP</ion-text>
     </ion-button>
   
     <ion-button 
@@ -61,3 +52,14 @@
   </div>
     
 </ion-card>
+
+
+<!-- <p class="ion-text-center">
+  <ion-text color="medium">OR</ion-text>
+</p> -->
+
+<!-- <p class="ion-text-center">
+  <ion-icon name="logo-facebook" color="tertiary"></ion-icon>
+  <ion-icon name="logo-twitter" color="secondary"></ion-icon>
+  <ion-icon name="logo-google" color="danger"></ion-icon>
+</p> -->

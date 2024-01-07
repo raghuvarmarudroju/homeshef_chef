@@ -21,7 +21,9 @@ export class ResetPasswordComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.model);
+  }
   
   getOtpLength(length) {
     this.length = length;

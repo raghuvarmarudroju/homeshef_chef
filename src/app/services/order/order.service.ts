@@ -48,33 +48,23 @@ export class OrderService {
       throw(e);
     }
   }
-
-  async getPastOrders() {
+  
+  async getOrders() {
     try {
-      await this.api.delayedResponse(1000); //remove when working with real apis
       await this.getUid();
       if(this.uid) {
-        this.page++;
-        console.log('page: ', this.page);
-        // const orders: Order[] = (this.api.allOrders.filter((order) => order.user_id == this.uid)).slice(0, 3);
-        let orders: Order[] = this.api.allOrders.filter((order) => order.user_id == this.uid);
-        const startIndex = (this.page - 1) * this.recordsLimit;
-        const endIndex = ((this.page - 1) * this.recordsLimit) + this.recordsLimit;
-        orders = orders.slice(startIndex, endIndex);
-        console.log('orders', orders);
-
-        let currentOrders: Order[] = this._orders.value;
-        console.log('currentOrders: ', currentOrders);
-        if(!this.order_fetched && this.new_order) { // remove this condition when using real apis
-          currentOrders = [this.new_order];
-          this.new_order = null;
+       const param =  {
+          chef: this.uid,
+          community :null,
+          status: null,  
+          date: null,
+          role: 3,
+          chef_id: this.uid
         }
-        currentOrders.push(...orders);
-        this.order_fetched = true; //remove when working with real apis
-        this._orders.next(currentOrders);
-        const loadMore = orders?.length < this.recordsLimit ? false : true;
-        console.log('loadMore: ', loadMore);
-        return {orders: currentOrders, loadMore};
+        this.auth.getChefOrders(param).subscribe((orders: any) => { 
+          console.log(orders);
+          this._orders.next(orders.data.orders);
+        });
       }
       return [];
     } catch(e) {

@@ -13,8 +13,7 @@
       </ion-segment-button>
     </ion-segment>
   </div>
-
-  <app-sign-in *ngIf="segmentValue == '1'" (resetPwd)="openResetPwdModal($event)"></app-sign-in>
+  <app-sign-in  *ngIf="segmentValue == '1'" (resetPwd)="openResetPwdModal($event)"></app-sign-in>
   <app-sign-up *ngIf="segmentValue == '2'"></app-sign-up>
 
   <ion-modal
@@ -28,7 +27,7 @@
       <app-reset-password
         [model]="resetPwdModel"
         (check_email)="sendResetPasswordEmailOtp($event)"
-        (verify_otp)="verifyResetPasswordOtp($event)"
+        (verify_otp)="verifyOtp($event)"
         (set_password)="resetPassword($event)">
       </app-reset-password>
     </ng-template>

@@ -59,27 +59,78 @@ export class AuthService {
         )
       )
   }
-  // async login(email: string, password: string): Promise<any> {
-  //   try {
-  //     const data = {
-  //       email,
-  //       password
-  //     };
-  //     const response = {
-  //       id: '1'
-  //     }
-  //     // const response = await this.http.lastValueFrom(this.http.get('your_api', data));
-  //     // console.log(response);
-  //     this.setUserData(response?.id);
-  //     return response;
-  //   } catch(e) {
-  //     throw(e);
-  //   }
-  // }
+  public checkMobileNumber(input : any){
+    const param = {
+      mobile: input,
+      cc: '+91',
+      from:'2'
+    };
+    return this.http.post(environment.adminURL +'checkMobileNumber', param)
+      .pipe(
+        map(
+          (response:any) => {
+            if (response) {
+              return response;
+            }
+          },
+          (error: any) => {
+            return error;
+          }
+        )
+      )
+  }
+  public getOTP(input : any){
+    const param = {
+      mobile: input,
+      cc: '+91',
+      from:'2'
+    };
+    return this.http.post(environment.adminURL +'send_otp', param)
+      .pipe(
+        map(
+          (response:any) => {
+            if (response) {
+              return response;
+            }
+          },
+          (error: any) => {
+            return error;
+          }
+        )
+      )
+  }
+  public verifyOTP(input : any){
 
-  // getUid() {
-  //   return this._uid.value;
-  // }
+    return this.http.post(environment.adminURL +'verifyOTP', input)
+      .pipe(
+        map(
+          (response:any) => {
+            if (response) {
+              return response;
+            }
+          },
+          (error: any) => {
+            return error;
+          }
+        )
+      )
+  }
+  public updateUser(input : any){
+
+    return this.http.post(environment.adminURL +'edit_profile', input)
+      .pipe(
+        map(
+          (response:any) => {
+            if (response) {
+              return response;
+            }
+          },
+          (error: any) => {
+            return error;
+          }
+        )
+      )
+  }
   public userById(id : any){
 
     return this.http.get(environment.serverBaseUrl + 'chef/'+id)
@@ -142,7 +193,26 @@ export class AuthService {
       return uid;
     }
   }
-
+  public getChefOrders(input : any){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "basic": environment.authToken
+      })
+    };
+    return this.http.post(environment.adminURL + 'ordersByCid',input,httpOptions)
+      .pipe(
+        map(
+          (response:any) => {
+            if (response) {
+              return response;
+            }
+          },
+          (error: any) => {
+            return error;
+          }
+        )
+      )
+  }
   setUserData(uid) {
     this.storage.setStorage(Strings.UID, uid);
     this._uid.next(new AuthUserId(uid));
@@ -195,7 +265,23 @@ export class AuthService {
       throw(e);
     }
   }
-
+  public delete(input : any){
+    return this.http.post(environment.adminURL + 'users/delete', input)
+      .pipe(
+        map(
+          async (response:any) => {
+            if (response) {
+              await this.storage.removeStorage(Strings.UID);
+              this._uid.next(AuthService.UNKNOWN_USER);
+              return response;
+            }
+          },
+          (error: any) => {
+            return error;
+          }
+        )
+      )
+  }
   async updateEmail(oldEmail, newEmail, password) {
     try {
       // update email, password required for verification if login via email

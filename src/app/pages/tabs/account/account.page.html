@@ -44,48 +44,52 @@
         <h4>Kitchen Name,About</h4>
       </ion-item>
       <ion-item lines="none" detail="true" (click)="updateTimings()">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="time-outline" slot="start" color="dark"></ion-icon>
         <h4>Timings</h4>
       </ion-item>
-      <ion-item lines="none" detail="true" >
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+      <!-- <ion-item lines="none" detail="true" >
+        <ion-icon name="images-outline" slot="start" color="dark"></ion-icon>
         <h4>Profile Gallery</h4>
       </ion-item>
       <ion-item lines="none" detail="true" >
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="folder-outline" slot="start" color="dark"></ion-icon>
         <h4>Documents</h4>
       </ion-item>
       <ion-item lines="none" detail="true" >
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="cash-outline" slot="start" color="dark"></ion-icon>
         <h4>Cash Limit,Bank Info</h4>
-      </ion-item>
+      </ion-item> -->
       <ion-item lines="none" detail="true" [routerLink]="['/', 'tabs', 'cuisines']">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="bowling-ball-outline" slot="start" color="dark"></ion-icon>
         <h4>Cusines</h4>
       </ion-item>
       <ion-item lines="none" detail="true" [routerLink]="['/', 'tabs', 'address']">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="location-outline" slot="start" color="dark"></ion-icon>
         <h4>Address</h4>
       </ion-item>
       <ion-item lines="none" detail="true" [routerLink]="['/', 'tabs', 'delivery-options']">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="bicycle-outline" slot="start" color="dark"></ion-icon>
         <h4>Delivery,Takeaway</h4>
       </ion-item>
       <ion-item lines="none" detail="true" [routerLink]="['/', 'tabs', 'menu']">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="fast-food-outline" slot="start" color="dark"></ion-icon>
         <h4>Menu</h4>
       </ion-item>
-      <ion-item lines="none" detail="true">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+      <!-- <ion-item lines="none" detail="true">
+        <ion-icon name="information-circle-outline" slot="start" color="dark"></ion-icon>
         <h4>Help</h4>
       </ion-item>
       <ion-item lines="none" detail="true">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="document-text-outline" slot="start" color="dark"></ion-icon>
         <h4>Privacy Policy</h4>
       </ion-item>
       <ion-item lines="none" detail="true">
-        <ion-icon name="caret-forward-outline" slot="start" color="dark"></ion-icon>
+        <ion-icon name="call-outline" slot="start" color="dark"></ion-icon>
         <h4>Contact Us</h4>
+      </ion-item> -->
+      <ion-item lines="none" detail="true" (click)="deleteAccount()">
+        <ion-icon name="close-circle-outline" slot="start" color="dark"></ion-icon>
+        <h4>Delete Account</h4>
       </ion-item>
     </ion-list>
   </ng-container>

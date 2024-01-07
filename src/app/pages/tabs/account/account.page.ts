@@ -77,7 +77,7 @@ export class AccountPage implements OnInit, OnDestroy {
     try {
       this.isLoading = true;
       await this.profileService.getProfile();
-      await this.orderService.getPastOrders();
+      await this.orderService.getOrders();
       this.isLoading = false; 
     } catch(e) {
       this.isLoading = false;
@@ -89,7 +89,7 @@ export class AccountPage implements OnInit, OnDestroy {
   async loadMoreOrders() {
     try {
       this.loadMore = true;
-      const response: any = await this.orderService.getPastOrders();
+      const response: any = await this.orderService.getOrders();
       this.noMoreOrders = !response?.loadMore;
       console.log('no more orders: ', this.noMoreOrders);
       this.loadMore = false; 
@@ -133,7 +133,21 @@ export class AccountPage implements OnInit, OnDestroy {
       }]
     );
   }
-
+  deleteAccount() {
+    this.global.showAlert(
+      'Are you sure you want to delete your account?',
+      'Confirm',
+      [{
+        text: 'No',
+        role: 'cancel'
+      }, {
+        text: 'Yes',
+        handler: () => {
+          this.delete();
+        }
+      }]
+    );
+  }
   async reorder(order: Order) {
     console.log(order);
     let data = await this.cartService.getCart();
@@ -208,7 +222,19 @@ export class AccountPage implements OnInit, OnDestroy {
       this.global.errorToast('Logout Failed! Check your internet connection');
     });
   }
-
+  delete(){
+    this.global.showLoader();
+    const param = {
+      id : this.profile.id
+    }
+    this.authService.delete(param).subscribe((userData: any) => { 
+      this.logout();
+    },
+    (err) => {
+      this.global.hideLoader();
+      this.global.errorToast(err.error.message);
+    });
+  }
   login() {
     // this.navCtrl.navigateRoot(Strings.LOGIN);
     this.global.navigateByUrl(Strings.LOGIN);

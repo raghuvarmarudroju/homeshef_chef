@@ -11,7 +11,7 @@ import { NgOtpInputModule } from 'ng-otp-input';
 export class OtpInputComponent implements OnInit {
 
   config = {
-    length: 4,
+    length: 6,
     allowNumbersOnly: true,
     inputClass: 'otp-input-style'
   };
